@@ -6,8 +6,9 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
@@ -24,8 +25,11 @@ function RootLayoutNav() {
   return (
     <Stack screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="onboarding" options={{ headerShown: false, animation: "fade" }} />
       <Stack.Screen name="parcel/[id]" options={{ headerShown: false, presentation: "card" }} />
       <Stack.Screen name="trip/[id]" options={{ headerShown: false, presentation: "card" }} />
+      <Stack.Screen name="carrier/[id]" options={{ headerShown: false, presentation: "card" }} />
+      <Stack.Screen name="review/[id]" options={{ headerShown: false, presentation: "modal" }} />
       <Stack.Screen name="notifications" options={{ headerShown: false, presentation: "card" }} />
       <Stack.Screen name="messages/index" options={{ headerShown: false, presentation: "card" }} />
       <Stack.Screen name="messages/[id]" options={{ headerShown: false, presentation: "card" }} />
@@ -42,9 +46,19 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
+    async function init() {
+      if (!fontsLoaded && !fontError) return;
+      try {
+        const onboarded = await AsyncStorage.getItem("pg_onboarded");
+        if (!onboarded) {
+          await SplashScreen.hideAsync();
+          router.replace("/onboarding");
+          return;
+        }
+      } catch {}
+      await SplashScreen.hideAsync();
     }
+    init();
   }, [fontsLoaded, fontError]);
 
   if (!fontsLoaded && !fontError) return null;

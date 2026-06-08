@@ -292,6 +292,10 @@ export default function HomeScreen() {
                 Haptics.selectionAsync();
                 router.push({ pathname: "/trip/[id]", params: { id: trip.id } });
               }}
+              onViewCarrier={() => {
+                Haptics.selectionAsync();
+                router.push({ pathname: "/carrier/[id]", params: { id: trip.id } });
+              }}
             />
           ))
         )}

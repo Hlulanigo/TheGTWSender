@@ -510,7 +510,13 @@ export default function SendScreen() {
                 </View>
                 {carriersToShow.map((trip) => (
                   <View key={trip.id} style={styles.carrierWithBtn}>
-                    <TripCard trip={trip} />
+                    <TripCard
+                      trip={trip}
+                      onViewCarrier={() => {
+                        Haptics.selectionAsync();
+                        router.push({ pathname: "/carrier/[id]", params: { id: trip.id } });
+                      }}
+                    />
                     <GradientButton
                       title={bookingTripId === trip.id ? "Requesting…" : "Request This Carrier"}
                       loading={bookingTripId === trip.id}
