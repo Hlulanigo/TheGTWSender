@@ -17,24 +17,33 @@ import { useApp } from "@/context/AppContext";
 import TripCard from "@/components/TripCard";
 import ParcelCard from "@/components/ParcelCard";
 
+const QUICK_ROUTES = [
+  { from: "New York", to: "Los Angeles" },
+  { from: "Chicago", to: "Houston" },
+  { from: "Seattle", to: "San Francisco" },
+];
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
-  const { trips, parcels, user, unreadNotifications } = useApp();
+  const { trips, parcels, user, unreadNotifications, conversations } = useApp();
   const [search, setSearch] = useState("");
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
 
   const openTrips = trips
-    .filter((t) => t.status === "open")
-    .filter((t) =>
-      !search ||
-      t.fromCity.toLowerCase().includes(search.toLowerCase()) ||
-      t.toCity.toLowerCase().includes(search.toLowerCase())
+    .filter((t) => t.status === "open" && !t.isOwn)
+    .filter(
+      (t) =>
+        !search ||
+        t.fromCity.toLowerCase().includes(search.toLowerCase()) ||
+        t.toCity.toLowerCase().includes(search.toLowerCase())
     );
 
   const activeParcels = parcels.filter(
-    (p) => p.status === "in_transit" || p.status === "pending"
+    (p) => p.status === "in_transit" || p.status === "matched"
   );
+  const pendingParcels = parcels.filter((p) => p.status === "pending");
+  const totalUnreadMessages = conversations.reduce((s, c) => s + c.unreadCount, 0);
 
   return (
     <ScrollView
@@ -45,7 +54,7 @@ export default function HomeScreen() {
       ]}
       showsVerticalScrollIndicator={false}
     >
-      {/* Hero header */}
+      {/* Hero */}
       <LinearGradient
         colors={["#1A0D3D", "#0D0B1E"]}
         style={[styles.hero, { paddingTop: topPad + 16 }]}
@@ -60,10 +69,15 @@ export default function HomeScreen() {
               style={styles.iconBtn}
               onPress={() => {
                 Haptics.selectionAsync();
-                router.push("/messages/index");
+                router.push("/(tabs)/messages");
               }}
             >
               <Feather name="message-circle" size={21} color="#FFFFFF" />
+              {totalUnreadMessages > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{totalUnreadMessages}</Text>
+                </View>
+              )}
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.iconBtn}
@@ -74,8 +88,8 @@ export default function HomeScreen() {
             >
               <Feather name="bell" size={21} color="#FFFFFF" />
               {unreadNotifications > 0 && (
-                <View style={styles.notifBadge}>
-                  <Text style={styles.notifBadgeText}>
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>
                     {unreadNotifications > 9 ? "9+" : unreadNotifications}
                   </Text>
                 </View>
@@ -86,73 +100,87 @@ export default function HomeScreen() {
 
         {/* Stats row */}
         <View style={styles.statsRow}>
-          <View style={styles.statCard}>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={() => router.push("/(tabs)/track")}
+            activeOpacity={0.8}
+          >
             <LinearGradient
-              colors={["rgba(124,58,237,0.25)", "rgba(124,58,237,0.1)"]}
-              style={styles.statGrad}
-            >
-              <Text style={styles.statValue}>{openTrips.length}</Text>
-              <Text style={styles.statLabel}>Trips Available</Text>
-            </LinearGradient>
-          </View>
-          <View style={styles.statCard}>
-            <LinearGradient
-              colors={["rgba(59,130,246,0.25)", "rgba(59,130,246,0.1)"]}
+              colors={["rgba(124,58,237,0.3)", "rgba(124,58,237,0.1)"]}
               style={styles.statGrad}
             >
               <Text style={styles.statValue}>{activeParcels.length}</Text>
-              <Text style={styles.statLabel}>Active Deliveries</Text>
+              <Text style={styles.statLabel}>In Transit</Text>
             </LinearGradient>
-          </View>
-          <View style={styles.statCard}>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={() => router.push("/(tabs)/track")}
+            activeOpacity={0.8}
+          >
             <LinearGradient
-              colors={["rgba(16,185,129,0.25)", "rgba(16,185,129,0.1)"]}
+              colors={["rgba(245,158,11,0.3)", "rgba(245,158,11,0.1)"]}
               style={styles.statGrad}
             >
-              <Text style={styles.statValue}>${user.earnings}</Text>
-              <Text style={styles.statLabel}>Earned</Text>
+              <Text style={styles.statValue}>{pendingParcels.length}</Text>
+              <Text style={styles.statLabel}>Awaiting Carrier</Text>
             </LinearGradient>
-          </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.statCard}
+            onPress={() => router.push("/(tabs)/track")}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={["rgba(16,185,129,0.3)", "rgba(16,185,129,0.1)"]}
+              style={styles.statGrad}
+            >
+              <Text style={[styles.statValue, { color: "#10B981" }]}>
+                {parcels.filter((p) => p.status === "delivered").length}
+              </Text>
+              <Text style={styles.statLabel}>Delivered</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
 
-        {/* Quick actions */}
-        <View style={styles.quickActions}>
-          <TouchableOpacity
-            style={styles.actionBtn}
-            activeOpacity={0.8}
-            onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              router.push("/(tabs)/send");
-            }}
+        {/* Primary CTA */}
+        <TouchableOpacity
+          style={styles.sendCta}
+          activeOpacity={0.88}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.push("/(tabs)/send");
+          }}
+        >
+          <LinearGradient
+            colors={["#7C3AED", "#4F46E5", "#3B82F6"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.sendCtaGrad}
           >
-            <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.actionGrad}>
-              <Feather name="package" size={20} color="#fff" />
-              <Text style={styles.actionText}>Send Package</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.actionBtn}
-            activeOpacity={0.8}
-            onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-              router.push("/(tabs)/travel");
-            }}
-          >
-            <LinearGradient colors={["#3B82F6", "#06B6D4"]} style={styles.actionGrad}>
-              <Feather name="navigation" size={20} color="#fff" />
-              <Text style={styles.actionText}>I'm Traveling</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+            <View style={styles.sendCtaLeft}>
+              <View style={styles.sendCtaIconCircle}>
+                <Feather name="package" size={22} color="#7C3AED" />
+              </View>
+              <View>
+                <Text style={styles.sendCtaTitle}>Send a Package</Text>
+                <Text style={styles.sendCtaSub}>
+                  {openTrips.length} carriers available now
+                </Text>
+              </View>
+            </View>
+            <Feather name="arrow-right" size={20} color="rgba(255,255,255,0.8)" />
+          </LinearGradient>
+        </TouchableOpacity>
       </LinearGradient>
 
-      {/* Search bar */}
+      {/* Search + quick routes */}
       <View style={styles.searchSection}>
         <View style={styles.searchWrap}>
-          <Feather name="search" size={16} color="#64748B" style={styles.searchIcon} />
+          <Feather name="search" size={16} color="#64748B" />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search by city (e.g. New York)"
+            placeholder="Search carriers by city…"
             placeholderTextColor="#64748B"
             value={search}
             onChangeText={setSearch}
@@ -163,50 +191,38 @@ export default function HomeScreen() {
             </TouchableOpacity>
           )}
         </View>
-      </View>
 
-      {/* Available Trips */}
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>
-            {search ? `Trips matching "${search}"` : "Available Trips"}
-          </Text>
-          {!search && (
-            <TouchableOpacity onPress={() => setSearch(" ")}>
-              <Text style={styles.seeAll}>See all</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-        {openTrips.length === 0 ? (
-          <View style={styles.emptySearch}>
-            <Feather name="map-pin" size={28} color="#4F46E5" />
-            <Text style={styles.emptySearchText}>
-              No trips found for "{search}"
-            </Text>
-          </View>
-        ) : (
-          openTrips.map((trip) => (
-            <TripCard
-              key={trip.id}
-              trip={trip}
-              onPress={() => {
-                Haptics.selectionAsync();
-                router.push({ pathname: "/trip/[id]", params: { id: trip.id } });
-              }}
-              onBook={() => {
-                Haptics.selectionAsync();
-                router.push({ pathname: "/trip/[id]", params: { id: trip.id } });
-              }}
-            />
-          ))
+        {!search && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.quickRoutes}
+          >
+            {QUICK_ROUTES.map((r) => (
+              <TouchableOpacity
+                key={r.from + r.to}
+                style={styles.quickChip}
+                onPress={() => setSearch(r.from)}
+                activeOpacity={0.8}
+              >
+                <Feather name="map-pin" size={11} color="#7C3AED" />
+                <Text style={styles.quickChipText}>
+                  {r.from} → {r.to}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         )}
       </View>
 
-      {/* Active Deliveries */}
+      {/* Active deliveries */}
       {activeParcels.length > 0 && (
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Active Deliveries</Text>
+            <View style={styles.sectionTitleRow}>
+              <View style={styles.liveIndicator} />
+              <Text style={styles.sectionTitle}>In Transit</Text>
+            </View>
             <TouchableOpacity onPress={() => router.push("/(tabs)/track")}>
               <Text style={styles.seeAll}>Track all</Text>
             </TouchableOpacity>
@@ -222,6 +238,64 @@ export default function HomeScreen() {
           ))}
         </View>
       )}
+
+      {/* Pending packages */}
+      {pendingParcels.length > 0 && (
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Awaiting Carrier</Text>
+            <TouchableOpacity onPress={() => router.push("/(tabs)/track")}>
+              <Text style={styles.seeAll}>View all</Text>
+            </TouchableOpacity>
+          </View>
+          {pendingParcels.map((p) => (
+            <ParcelCard
+              key={p.id}
+              parcel={p}
+              onPress={() =>
+                router.push({ pathname: "/parcel/[id]", params: { id: p.id } })
+              }
+            />
+          ))}
+        </View>
+      )}
+
+      {/* Carriers feed */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>
+            {search ? `Carriers matching "${search}"` : "Available Carriers"}
+          </Text>
+          {!search && openTrips.length > 3 && (
+            <TouchableOpacity onPress={() => setSearch(" ")}>
+              <Text style={styles.seeAll}>See all</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        {openTrips.length === 0 ? (
+          <View style={styles.emptyCarriers}>
+            <Feather name="compass" size={28} color="#4F46E5" />
+            <Text style={styles.emptyCarriersText}>
+              {search ? `No carriers found for "${search.trim()}"` : "No carriers available right now"}
+            </Text>
+          </View>
+        ) : (
+          openTrips.slice(0, search ? openTrips.length : 5).map((trip) => (
+            <TripCard
+              key={trip.id}
+              trip={trip}
+              onPress={() => {
+                Haptics.selectionAsync();
+                router.push({ pathname: "/trip/[id]", params: { id: trip.id } });
+              }}
+              onBook={() => {
+                Haptics.selectionAsync();
+                router.push({ pathname: "/trip/[id]", params: { id: trip.id } });
+              }}
+            />
+          ))
+        )}
+      </View>
     </ScrollView>
   );
 }
@@ -242,30 +316,37 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.08)",
     alignItems: "center", justifyContent: "center",
   },
-  notifBadge: {
-    position: "absolute", top: 6, right: 6,
+  badge: {
+    position: "absolute", top: 5, right: 5,
     minWidth: 16, height: 16, borderRadius: 8,
-    backgroundColor: "#7C3AED",
-    alignItems: "center", justifyContent: "center",
-    borderWidth: 1.5, borderColor: "#0D0B1E",
-    paddingHorizontal: 3,
+    backgroundColor: "#7C3AED", alignItems: "center", justifyContent: "center",
+    borderWidth: 1.5, borderColor: "#0D0B1E", paddingHorizontal: 3,
   },
-  notifBadgeText: { color: "#fff", fontSize: 9, fontFamily: "Inter_700Bold" },
+  badgeText: { color: "#fff", fontSize: 9, fontFamily: "Inter_700Bold" },
   statsRow: { flexDirection: "row", gap: 10, marginBottom: 16 },
   statCard: { flex: 1, borderRadius: 14, overflow: "hidden" },
   statGrad: {
     padding: 12, alignItems: "center", borderRadius: 14,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },
-  statValue: { color: "#FFFFFF", fontSize: 18, fontFamily: "Inter_700Bold" },
+  statValue: { color: "#FFFFFF", fontSize: 20, fontFamily: "Inter_700Bold" },
   statLabel: {
-    color: "#94A3B8", fontSize: 10, fontFamily: "Inter_400Regular",
-    textAlign: "center", marginTop: 2,
+    color: "#94A3B8", fontSize: 9, fontFamily: "Inter_400Regular",
+    textAlign: "center", marginTop: 3,
   },
-  quickActions: { flexDirection: "row", gap: 12 },
-  actionBtn: { flex: 1, borderRadius: 16, overflow: "hidden" },
-  actionGrad: { paddingVertical: 16, alignItems: "center", gap: 8 },
-  actionText: { color: "#fff", fontSize: 13, fontFamily: "Inter_600SemiBold" },
+  sendCta: { borderRadius: 20, overflow: "hidden" },
+  sendCtaGrad: {
+    flexDirection: "row", alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 18, paddingHorizontal: 20,
+  },
+  sendCtaLeft: { flexDirection: "row", alignItems: "center", gap: 14 },
+  sendCtaIconCircle: {
+    width: 44, height: 44, borderRadius: 14,
+    backgroundColor: "#fff", alignItems: "center", justifyContent: "center",
+  },
+  sendCtaTitle: { color: "#fff", fontSize: 17, fontFamily: "Inter_700Bold" },
+  sendCtaSub: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontFamily: "Inter_400Regular", marginTop: 2 },
   searchSection: { paddingHorizontal: 20, paddingTop: 18 },
   searchWrap: {
     flexDirection: "row", alignItems: "center",
@@ -273,18 +354,29 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: "rgba(255,255,255,0.07)",
     paddingHorizontal: 14, paddingVertical: 12, gap: 8,
   },
-  searchIcon: {},
-  searchInput: {
-    flex: 1, color: "#FFFFFF",
-    fontSize: 14, fontFamily: "Inter_400Regular",
+  searchInput: { flex: 1, color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_400Regular" },
+  quickRoutes: { gap: 8, paddingTop: 12, paddingBottom: 2 },
+  quickChip: {
+    flexDirection: "row", alignItems: "center", gap: 6,
+    backgroundColor: "rgba(124,58,237,0.12)",
+    borderRadius: 20, paddingVertical: 7, paddingHorizontal: 12,
+    borderWidth: 1, borderColor: "rgba(124,58,237,0.2)",
   },
+  quickChipText: { color: "#A78BFA", fontSize: 12, fontFamily: "Inter_500Medium" },
   section: { paddingHorizontal: 20, paddingTop: 24 },
   sectionHeader: {
     flexDirection: "row", alignItems: "center",
     justifyContent: "space-between", marginBottom: 14,
   },
+  sectionTitleRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontFamily: "Inter_700Bold" },
+  liveIndicator: {
+    width: 8, height: 8, borderRadius: 4, backgroundColor: "#10B981",
+  },
   seeAll: { color: "#7C3AED", fontSize: 13, fontFamily: "Inter_600SemiBold" },
-  emptySearch: { alignItems: "center", paddingVertical: 32, gap: 10 },
-  emptySearchText: { color: "#94A3B8", fontSize: 14, fontFamily: "Inter_400Regular" },
+  emptyCarriers: { alignItems: "center", paddingVertical: 32, gap: 10 },
+  emptyCarriersText: {
+    color: "#94A3B8", fontSize: 14, fontFamily: "Inter_400Regular",
+    textAlign: "center",
+  },
 });

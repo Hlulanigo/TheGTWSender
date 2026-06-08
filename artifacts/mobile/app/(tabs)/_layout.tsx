@@ -5,7 +5,7 @@ import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { SymbolView } from "expo-symbols";
 import { Feather } from "@expo/vector-icons";
 import React from "react";
-import { Platform, StyleSheet, View, useColorScheme } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { useColors } from "@/hooks/useColors";
 
 function NativeTabLayout() {
@@ -19,13 +19,13 @@ function NativeTabLayout() {
         <Icon sf={{ default: "shippingbox", selected: "shippingbox.fill" }} />
         <Label>Send</Label>
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="travel">
-        <Icon sf={{ default: "car", selected: "car.fill" }} />
-        <Label>Travel</Label>
-      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="track">
         <Icon sf={{ default: "mappin.circle", selected: "mappin.circle.fill" }} />
         <Label>Track</Label>
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="messages">
+        <Icon sf={{ default: "message", selected: "message.fill" }} />
+        <Label>Messages</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="profile">
         <Icon sf={{ default: "person.circle", selected: "person.circle.fill" }} />
@@ -37,8 +37,6 @@ function NativeTabLayout() {
 
 function ClassicTabLayout() {
   const colors = useColors();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
   const isIOS = Platform.OS === "ios";
   const isWeb = Platform.OS === "web";
 
@@ -58,18 +56,9 @@ function ClassicTabLayout() {
         },
         tabBarBackground: () =>
           isIOS ? (
-            <BlurView
-              intensity={80}
-              tint="dark"
-              style={StyleSheet.absoluteFill}
-            />
+            <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill} />
           ) : isWeb ? (
-            <View
-              style={[
-                StyleSheet.absoluteFill,
-                { backgroundColor: "#0D0B1E" },
-              ]}
-            />
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: "#0D0B1E" }]} />
           ) : null,
       }}
     >
@@ -98,18 +87,6 @@ function ClassicTabLayout() {
         }}
       />
       <Tabs.Screen
-        name="travel"
-        options={{
-          title: "Travel",
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="car" tintColor={color} size={24} />
-            ) : (
-              <Feather name="navigation" size={22} color={color} />
-            ),
-        }}
-      />
-      <Tabs.Screen
         name="track"
         options={{
           title: "Track",
@@ -118,6 +95,18 @@ function ClassicTabLayout() {
               <SymbolView name="mappin.circle" tintColor={color} size={24} />
             ) : (
               <Feather name="map-pin" size={22} color={color} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          title: "Messages",
+          tabBarIcon: ({ color }) =>
+            isIOS ? (
+              <SymbolView name="message" tintColor={color} size={24} />
+            ) : (
+              <Feather name="message-circle" size={22} color={color} />
             ),
         }}
       />
@@ -133,6 +122,8 @@ function ClassicTabLayout() {
             ),
         }}
       />
+      {/* Hidden routes – keep file but remove from tab bar */}
+      <Tabs.Screen name="travel" options={{ href: null }} />
     </Tabs>
   );
 }
