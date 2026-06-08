@@ -22,15 +22,13 @@ const queryClient = new QueryClient();
 
 function RootLayoutNav() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
+    <Stack screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="parcel/[id]"
-        options={{
-          headerShown: false,
-          presentation: "card",
-        }}
-      />
+      <Stack.Screen name="parcel/[id]" options={{ headerShown: false, presentation: "card" }} />
+      <Stack.Screen name="trip/[id]" options={{ headerShown: false, presentation: "card" }} />
+      <Stack.Screen name="notifications" options={{ headerShown: false, presentation: "card" }} />
+      <Stack.Screen name="messages/index" options={{ headerShown: false, presentation: "card" }} />
+      <Stack.Screen name="messages/[id]" options={{ headerShown: false, presentation: "card" }} />
     </Stack>
   );
 }
