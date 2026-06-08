@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "qNd3dcIQwl8CJ7_A614Yl"
+uri = "file://artifacts/mobile/assets/images/icon.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "sTaUl4_q8Ud93gvhTAEEp"
+uri = "file://artifacts/mobile/assets/images/splash.png"
+type = "image"
+title = "generated_image"
