@@ -1,0 +1,1 @@
+- [ParcelGo Expo artifact registration](parcelgo-expo-artifact.md) — artifact.toml uses legacy path-style id; listArtifacts() returns empty but app runs fine on port 18115.

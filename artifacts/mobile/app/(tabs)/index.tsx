@@ -23,6 +23,13 @@ const QUICK_ROUTES = [
   { from: "Seattle", to: "San Francisco" },
 ];
 
+function getGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning,";
+  if (h < 17) return "Good afternoon,";
+  return "Good evening,";
+}
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { trips, parcels, user, unreadNotifications, conversations } = useApp();
@@ -61,7 +68,7 @@ export default function HomeScreen() {
       >
         <View style={styles.heroTop}>
           <View>
-            <Text style={styles.heroGreeting}>Good morning,</Text>
+            <Text style={styles.heroGreeting}>{getGreeting()}</Text>
             <Text style={styles.heroName}>{user.name.split(" ")[0]}</Text>
           </View>
           <View style={styles.headerIcons}>
