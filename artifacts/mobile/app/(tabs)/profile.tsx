@@ -14,6 +14,7 @@ import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { useApp } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 
 const MENU_SECTIONS = [
   {
@@ -49,8 +50,13 @@ const MENU_SECTIONS = [
 
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
-  const { user, parcels } = useApp();
+  const { parcels } = useApp();
+  const { user: authUser, signOut } = useAuth();
   const topPad = Platform.OS === "web" ? 67 : insets.top;
+
+  const displayName = authUser?.name ?? "GTW User";
+  const displayEmail = authUser?.email ?? "";
+  const initials = displayName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
 
   const totalSent = parcels.length;
   const delivered = parcels.filter((p) => p.status === "delivered").length;
@@ -89,9 +95,7 @@ export default function ProfileScreen() {
         <View style={styles.avatarSection}>
           <LinearGradient colors={["#F97316", "#3B82F6"]} style={styles.avatarRing}>
             <View style={styles.avatarInner}>
-              <Text style={styles.avatarInitials}>
-                {user.name.split(" ").map((n) => n[0]).join("")}
-              </Text>
+              <Text style={styles.avatarInitials}>{initials}</Text>
             </View>
           </LinearGradient>
           <LinearGradient colors={["#10B981", "#059669"]} style={styles.verifiedBadge}>
@@ -99,13 +103,11 @@ export default function ProfileScreen() {
           </LinearGradient>
         </View>
 
-        <Text style={styles.profileName}>{user.name}</Text>
-        <Text style={styles.profileEmail}>{user.email}</Text>
+        <Text style={styles.profileName}>{displayName}</Text>
+        <Text style={styles.profileEmail}>{displayEmail}</Text>
         <View style={styles.ratingRow}>
           <Feather name="star" size={13} color="#F59E0B" />
-          <Text style={styles.ratingText}>{user.rating} sender rating</Text>
-          <View style={styles.dot} />
-          <Text style={styles.memberText}>Since {user.memberSince}</Text>
+          <Text style={styles.ratingText}>GTW Member</Text>
         </View>
       </LinearGradient>
 
@@ -190,7 +192,11 @@ export default function ProfileScreen() {
       <TouchableOpacity
         style={styles.signOutBtn}
         activeOpacity={0.8}
-        onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)}
+        onPress={async () => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          await signOut();
+          router.replace("/auth/login");
+        }}
       >
         <Feather name="log-out" size={16} color="#EF4444" />
         <Text style={styles.signOutText}>Sign Out</Text>

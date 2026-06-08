@@ -55,3 +55,11 @@ externalPort = 3000
 [[ports]]
 localPort = 18116
 externalPort = 3001
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+EXPO_PUBLIC_API_URL = "https://gtw-ui-createcontinue-5--alexandra051.replit.app"

@@ -75,11 +75,17 @@ export default function OnboardingScreen() {
   async function handleGetStarted() {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     await AsyncStorage.setItem("pg_onboarded", "true");
-    router.replace("/(tabs)");
+    router.replace("/auth/register");
   }
 
   function handleSkip() {
     handleGetStarted();
+  }
+
+  async function handleSignIn() {
+    Haptics.selectionAsync();
+    await AsyncStorage.setItem("pg_onboarded", "true");
+    router.replace("/auth/login");
   }
 
   const slide = SLIDES[currentSlide];
@@ -205,7 +211,7 @@ export default function OnboardingScreen() {
         </TouchableOpacity>
 
         {/* Login shortcut */}
-        <TouchableOpacity onPress={handleGetStarted} style={styles.loginBtn}>
+        <TouchableOpacity onPress={handleSignIn} style={styles.loginBtn}>
           <Text style={styles.loginText}>Already have an account? </Text>
           <Text style={[styles.loginText, { color: "#F97316", fontFamily: "Inter_600SemiBold" }]}>Sign In</Text>
         </TouchableOpacity>
