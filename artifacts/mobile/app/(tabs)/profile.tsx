@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Platform,
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
@@ -66,9 +67,14 @@ export default function ProfileScreen() {
     >
       {/* Profile hero */}
       <LinearGradient
-        colors={["#1A0D3D", "#0D0B1E"]}
-        style={[styles.hero, { paddingTop: topPad + 16 }]}
+        colors={["#1C0D04", "#0F0A04"]}
+        style={[styles.hero, { paddingTop: topPad + 10 }]}
       >
+        {/* Brand logo */}
+        <View style={styles.brandRow}>
+          <Image source={require("@/assets/logo.png")} style={styles.brandLogo} resizeMode="contain" tintColor="#F97316" />
+        </View>
+
         {/* Notifications shortcut */}
         <View style={styles.heroTopRow}>
           <View />
@@ -81,7 +87,7 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.avatarSection}>
-          <LinearGradient colors={["#7C3AED", "#3B82F6"]} style={styles.avatarRing}>
+          <LinearGradient colors={["#F97316", "#3B82F6"]} style={styles.avatarRing}>
             <View style={styles.avatarInner}>
               <Text style={styles.avatarInitials}>
                 {user.name.split(" ").map((n) => n[0]).join("")}
@@ -106,8 +112,8 @@ export default function ProfileScreen() {
       {/* Stats */}
       <View style={styles.statsSection}>
         <View style={styles.statsGrid}>
-          <LinearGradient colors={["rgba(124,58,237,0.18)", "rgba(124,58,237,0.05)"]} style={styles.statBox}>
-            <Feather name="package" size={18} color="#7C3AED" style={{ marginBottom: 6 }} />
+          <LinearGradient colors={["rgba(249,115,22,0.18)", "rgba(249,115,22,0.05)"]} style={styles.statBox}>
+            <Feather name="package" size={18} color="#F97316" style={{ marginBottom: 6 }} />
             <Text style={styles.statValue}>{totalSent}</Text>
             <Text style={styles.statLabel}>Packages Sent</Text>
           </LinearGradient>
@@ -131,7 +137,7 @@ export default function ProfileScreen() {
           style={styles.ctaBtn}
           activeOpacity={0.88}
         >
-          <LinearGradient colors={["#7C3AED", "#4F46E5", "#3B82F6"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGrad}>
+          <LinearGradient colors={["#F97316", "#EA580C", "#3B82F6"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGrad}>
             <Feather name="package" size={18} color="#fff" />
             <Text style={styles.ctaText}>Send a Package</Text>
             <Feather name="arrow-right" size={16} color="rgba(255,255,255,0.7)" />
@@ -158,10 +164,10 @@ export default function ProfileScreen() {
                 }}
               >
                 <LinearGradient
-                  colors={["rgba(124,58,237,0.2)", "rgba(79,70,229,0.1)"]}
+                  colors={["rgba(249,115,22,0.2)", "rgba(234,88,12,0.1)"]}
                   style={styles.menuIcon}
                 >
-                  <Feather name={item.icon as any} size={16} color="#7C3AED" />
+                  <Feather name={item.icon as any} size={16} color="#F97316" />
                 </LinearGradient>
                 <View style={styles.menuTextBlock}>
                   <Text style={styles.menuLabel}>{item.label}</Text>
@@ -194,7 +200,7 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   content: {},
   hero: { paddingHorizontal: 20, paddingBottom: 28, alignItems: "center" },
   heroTopRow: { flexDirection: "row", alignItems: "center", justifyContent: "flex-end", width: "100%", marginBottom: 16 },
@@ -203,14 +209,16 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.08)",
     alignItems: "center", justifyContent: "center",
   },
+  brandRow: { alignItems: "center", marginBottom: 12 },
+  brandLogo: { width: 110, height: 38 },
   avatarSection: { position: "relative", marginBottom: 14 },
   avatarRing: { width: 88, height: 88, borderRadius: 44, padding: 3, alignItems: "center", justifyContent: "center" },
-  avatarInner: { width: 82, height: 82, borderRadius: 41, backgroundColor: "#1E1A3A", alignItems: "center", justifyContent: "center" },
+  avatarInner: { width: 82, height: 82, borderRadius: 41, backgroundColor: "#1C1208", alignItems: "center", justifyContent: "center" },
   avatarInitials: { color: "#FFFFFF", fontSize: 28, fontFamily: "Inter_700Bold" },
   verifiedBadge: {
     position: "absolute", bottom: 2, right: 2,
     width: 22, height: 22, borderRadius: 11, overflow: "hidden",
-    borderWidth: 2, borderColor: "#0D0B1E",
+    borderWidth: 2, borderColor: "#0F0A04",
     alignItems: "center", justifyContent: "center",
   },
   profileName: { color: "#FFFFFF", fontSize: 22, fontFamily: "Inter_700Bold", marginBottom: 4 },
@@ -233,7 +241,7 @@ const styles = StyleSheet.create({
   ctaText: { color: "#fff", fontSize: 16, fontFamily: "Inter_600SemiBold", flex: 1, marginLeft: 12 },
   menuSection: { paddingHorizontal: 20, paddingTop: 20 },
   menuSectionTitle: { color: "#64748B", fontSize: 11, fontFamily: "Inter_500Medium", textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 },
-  menuCard: { backgroundColor: "#1E1A3A", borderRadius: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", overflow: "hidden" },
+  menuCard: { backgroundColor: "#1C1208", borderRadius: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", overflow: "hidden" },
   menuItem: {
     flexDirection: "row", alignItems: "center",
     padding: 14, gap: 12,

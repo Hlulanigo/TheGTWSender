@@ -75,7 +75,7 @@ export default function ReviewScreen() {
         </LinearGradient>
         <Text style={styles.successTitle}>Review Submitted!</Text>
         <Text style={styles.successSub}>
-          Thank you for rating your delivery experience. Your feedback helps the ParcelGo community.
+          Thank you for rating your delivery experience. Your feedback helps the GTW community.
         </Text>
         <View style={styles.starsSubmitted}>
           {[1, 2, 3, 4, 5].map((i) => (
@@ -96,7 +96,7 @@ export default function ReviewScreen() {
 
   return (
     <View style={styles.screen}>
-      <LinearGradient colors={["#1A0D3D", "#0D0B1E"]} style={[styles.header, { paddingTop: topPad + 8 }]}>
+      <LinearGradient colors={["#1C0D04", "#0F0A04"]} style={[styles.header, { paddingTop: topPad + 8 }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
           <Feather name="arrow-left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
@@ -127,7 +127,7 @@ export default function ReviewScreen() {
         {/* Carrier */}
         {carrier && (
           <View style={styles.carrierCard}>
-            <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.carrierAvatar}>
+            <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.carrierAvatar}>
               <Text style={styles.carrierInitials}>{carrier.travelerInitials}</Text>
             </LinearGradient>
             <View style={styles.carrierInfo}>
@@ -177,7 +177,7 @@ export default function ReviewScreen() {
                 return (
                   <TouchableOpacity key={p} onPress={() => togglePrompt(p)} activeOpacity={0.8}>
                     {active ? (
-                      <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.promptChip}>
+                      <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.promptChip}>
                         <Feather name="check" size={12} color="#fff" />
                         <Text style={styles.promptTextActive}>{p}</Text>
                       </LinearGradient>
@@ -216,7 +216,7 @@ export default function ReviewScreen() {
         <GradientButton
           title={rating === 0 ? "Select a Rating" : `Submit ${rating}-Star Review`}
           onPress={handleSubmit}
-          gradientColors={rating > 0 ? ["#7C3AED", "#3B82F6"] : ["#374151", "#374151"]}
+          gradientColors={rating > 0 ? ["#F97316", "#3B82F6"] : ["#374151", "#374151"]}
           style={styles.submitBtn}
         />
       </ScrollView>
@@ -225,20 +225,20 @@ export default function ReviewScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 17, fontFamily: "Inter_700Bold" },
   body: { flex: 1 },
   bodyContent: { padding: 20 },
-  packageCard: { flexDirection: "row", alignItems: "center", backgroundColor: "#1E1A3A", borderRadius: 16, padding: 14, marginBottom: 10, gap: 12, borderWidth: 1, borderColor: "rgba(16,185,129,0.2)" },
+  packageCard: { flexDirection: "row", alignItems: "center", backgroundColor: "#1C1208", borderRadius: 16, padding: 14, marginBottom: 10, gap: 12, borderWidth: 1, borderColor: "rgba(16,185,129,0.2)" },
   packageIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   packageInfo: { flex: 1 },
   packageTitle: { color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_600SemiBold" },
   packageRoute: { color: "#94A3B8", fontSize: 12, fontFamily: "Inter_400Regular", marginTop: 2 },
   deliveredBadge: { backgroundColor: "rgba(16,185,129,0.15)", borderRadius: 8, paddingVertical: 4, paddingHorizontal: 8 },
   deliveredText: { color: "#10B981", fontSize: 11, fontFamily: "Inter_600SemiBold" },
-  carrierCard: { flexDirection: "row", alignItems: "center", backgroundColor: "#1E1A3A", borderRadius: 16, padding: 14, marginBottom: 24, gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  carrierCard: { flexDirection: "row", alignItems: "center", backgroundColor: "#1C1208", borderRadius: 16, padding: 14, marginBottom: 24, gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
   carrierAvatar: { width: 46, height: 46, borderRadius: 23, alignItems: "center", justifyContent: "center" },
   carrierInitials: { color: "#fff", fontSize: 15, fontFamily: "Inter_700Bold" },
   carrierInfo: { flex: 1 },
@@ -254,12 +254,12 @@ const styles = StyleSheet.create({
   promptTitle: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_500Medium", marginBottom: 12 },
   promptGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   promptChip: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 20, paddingVertical: 8, paddingHorizontal: 12 },
-  promptChipInactive: { backgroundColor: "#1E1A3A", borderRadius: 20, paddingVertical: 8, paddingHorizontal: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  promptChipInactive: { backgroundColor: "#1C1208", borderRadius: 20, paddingVertical: 8, paddingHorizontal: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
   promptText: { color: "#94A3B8", fontSize: 12, fontFamily: "Inter_500Medium" },
   promptTextActive: { color: "#fff", fontSize: 12, fontFamily: "Inter_600SemiBold" },
   commentSection: { marginBottom: 20 },
   commentLabel: { color: "#94A3B8", fontSize: 11, fontFamily: "Inter_500Medium", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 10 },
-  commentWrap: { backgroundColor: "#1E1A3A", borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", padding: 14 },
+  commentWrap: { backgroundColor: "#1C1208", borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", padding: 14 },
   commentInput: { color: "#FFFFFF", fontSize: 15, fontFamily: "Inter_400Regular", minHeight: 80, textAlignVertical: "top" },
   charCount: { color: "#64748B", fontSize: 11, fontFamily: "Inter_400Regular", textAlign: "right", marginTop: 8 },
   submitBtn: { marginTop: 8 },

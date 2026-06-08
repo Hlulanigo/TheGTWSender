@@ -23,7 +23,7 @@ export default function StatusTimeline({
                 <LinearGradient
                   colors={
                     isActive
-                      ? ["#7C3AED", "#3B82F6"]
+                      ? ["#F97316", "#3B82F6"]
                       : ["#10B981", "#059669"]
                   }
                   style={styles.dotFilled}
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginVertical: 2,
     minHeight: 20,
   },
-  lineActive: { backgroundColor: "rgba(124,58,237,0.35)" },
+  lineActive: { backgroundColor: "rgba(249,115,22,0.35)" },
   content: { flex: 1, paddingLeft: 12 },
   stepTitle: {
     color: "#FFFFFF",

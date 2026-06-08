@@ -177,11 +177,11 @@ const INITIAL_CONVERSATIONS: Conversation[] = [
     { id: "m4", senderId: "me", text: "Anytime after 8am works for me. I'm at 42 West St.", timestamp: "Dec 9, 8:14 AM" },
     { id: "m5", senderId: "other", text: "I'll pick it up at 9am tomorrow", timestamp: "Dec 9, 8:15 AM" },
   ] },
-  { id: "c2", parcelId: "p2", otherName: "Sarah Kim", otherInitials: "SK", lastMessage: "Package delivered! Thanks for using ParcelGo", lastMessageTime: "Dec 5", unreadCount: 0, messages: [
+  { id: "c2", parcelId: "p2", otherName: "Sarah Kim", otherInitials: "SK", lastMessage: "Package delivered! Thanks for using GTW", lastMessageTime: "Dec 5", unreadCount: 0, messages: [
     { id: "m6", senderId: "other", text: "I just picked up the Birthday Gift from Chicago!", timestamp: "Dec 4, 9:05 AM" },
     { id: "m7", senderId: "me", text: "Awesome! Please handle with care, it's fragile.", timestamp: "Dec 4, 9:10 AM" },
     { id: "m8", senderId: "other", text: "Of course, will wrap it extra carefully!", timestamp: "Dec 4, 9:12 AM" },
-    { id: "m9", senderId: "other", text: "Package delivered! Thanks for using ParcelGo", timestamp: "Dec 5, 3:50 PM" },
+    { id: "m9", senderId: "other", text: "Package delivered! Thanks for using GTW", timestamp: "Dec 5, 3:50 PM" },
   ] },
 ];
 

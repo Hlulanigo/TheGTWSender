@@ -24,7 +24,7 @@ const TABS: { key: ParcelStatus | "all"; label: string }[] = [
 
 const STATUS_CONFIG: Record<string, { label: string; colors: [string, string]; icon: string }> = {
   pending: { label: "Pending", colors: ["#F59E0B", "#D97706"], icon: "clock" },
-  matched: { label: "Matched", colors: ["#7C3AED", "#4F46E5"], icon: "check-circle" },
+  matched: { label: "Matched", colors: ["#F97316", "#EA580C"], icon: "check-circle" },
   in_transit: { label: "In Transit", colors: ["#3B82F6", "#06B6D4"], icon: "navigation" },
   delivered: { label: "Delivered", colors: ["#10B981", "#059669"], icon: "check-circle" },
 };
@@ -36,7 +36,7 @@ function ProgressBar({ status }: { status: ParcelStatus }) {
   return (
     <View style={pb.track}>
       <LinearGradient
-        colors={["#7C3AED", "#3B82F6"]}
+        colors={["#F97316", "#3B82F6"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={[pb.fill, { width: `${pct}%` as any }]}
@@ -69,7 +69,7 @@ export default function TrackScreen() {
   return (
     <View style={styles.screen}>
       <LinearGradient
-        colors={["#1A1133", "#0D0B1E"]}
+        colors={["#1C0D04", "#0F0A04"]}
         style={[styles.header, { paddingTop: topPad + 16 }]}
       >
         <Text style={styles.headerTitle}>My Packages</Text>
@@ -110,7 +110,7 @@ export default function TrackScreen() {
               >
                 {active ? (
                   <LinearGradient
-                    colors={["#7C3AED", "#4F46E5"]}
+                    colors={["#F97316", "#EA580C"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={styles.tabGrad}
@@ -146,7 +146,7 @@ export default function TrackScreen() {
       >
         {filtered.length === 0 ? (
           <View style={styles.emptyState}>
-            <Feather name="inbox" size={40} color="#4F46E5" />
+            <Feather name="inbox" size={40} color="#EA580C" />
             <Text style={styles.emptyTitle}>No packages here</Text>
             <Text style={styles.emptyText}>
               Packages in this category will appear here
@@ -156,7 +156,7 @@ export default function TrackScreen() {
                 style={styles.sendBtn}
                 onPress={() => router.push("/(tabs)/send")}
               >
-                <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.sendBtnGrad}>
+                <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.sendBtnGrad}>
                   <Text style={styles.sendBtnText}>Send a Package</Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -193,7 +193,7 @@ export default function TrackScreen() {
                       <Text style={styles.parcelTitle}>{p.title}</Text>
                       <View style={styles.routeRow}>
                         <Text style={styles.routeCity}>{p.fromCity}</Text>
-                        <Feather name="arrow-right" size={11} color="#4F46E5" />
+                        <Feather name="arrow-right" size={11} color="#EA580C" />
                         <Text style={styles.routeCity}>{p.toCity}</Text>
                       </View>
                     </View>
@@ -242,7 +242,7 @@ export default function TrackScreen() {
                           onPress={() => router.push({ pathname: "/messages/[id]", params: { id: "c1" } })}
                           style={styles.chatBtn}
                         >
-                          <Feather name="message-circle" size={14} color="#7C3AED" />
+                          <Feather name="message-circle" size={14} color="#F97316" />
                           <Text style={styles.chatBtnText}>Chat</Text>
                         </TouchableOpacity>
                       )}
@@ -259,7 +259,7 @@ export default function TrackScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   header: { paddingHorizontal: 20, paddingBottom: 16 },
   headerTitle: { color: "#FFFFFF", fontSize: 26, fontFamily: "Inter_700Bold", marginBottom: 12 },
   liveBanner: { borderRadius: 12, overflow: "hidden", marginBottom: 14 },
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
   sendBtnGrad: { paddingVertical: 12, paddingHorizontal: 24 },
   sendBtnText: { color: "#fff", fontSize: 14, fontFamily: "Inter_600SemiBold" },
   parcelCard: {
-    backgroundColor: "#1E1A3A", borderRadius: 20, overflow: "hidden",
+    backgroundColor: "#1C1208", borderRadius: 20, overflow: "hidden",
     marginBottom: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },
   accentLine: { height: 3 },
@@ -322,8 +322,8 @@ const styles = StyleSheet.create({
   liveChipText: { color: "#10B981", fontSize: 12, fontFamily: "Inter_500Medium" },
   chatBtn: {
     flexDirection: "row", alignItems: "center", gap: 5,
-    backgroundColor: "rgba(124,58,237,0.15)",
+    backgroundColor: "rgba(249,115,22,0.15)",
     borderRadius: 10, paddingVertical: 6, paddingHorizontal: 10,
   },
-  chatBtnText: { color: "#7C3AED", fontSize: 12, fontFamily: "Inter_600SemiBold" },
+  chatBtnText: { color: "#F97316", fontSize: 12, fontFamily: "Inter_600SemiBold" },
 });

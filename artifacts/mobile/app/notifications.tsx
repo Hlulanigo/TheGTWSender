@@ -16,7 +16,7 @@ import { useApp, AppNotification } from "@/context/AppContext";
 
 const ICON_MAP: Record<string, { icon: string; colors: [string, string] }> = {
   delivery: { icon: "check-circle", colors: ["#10B981", "#059669"] },
-  match: { icon: "package", colors: ["#7C3AED", "#4F46E5"] },
+  match: { icon: "package", colors: ["#F97316", "#EA580C"] },
   message: { icon: "message-circle", colors: ["#3B82F6", "#06B6D4"] },
   system: { icon: "bell", colors: ["#F59E0B", "#D97706"] },
 };
@@ -45,7 +45,7 @@ export default function NotificationsScreen() {
   return (
     <View style={styles.screen}>
       <LinearGradient
-        colors={["#1A0D3D", "#0D0B1E"]}
+        colors={["#1C0D04", "#0F0A04"]}
         style={[styles.header, { paddingTop: topPad + 8 }]}
       >
         <View style={styles.headerRow}>
@@ -69,7 +69,7 @@ export default function NotificationsScreen() {
         {unread > 0 && (
           <View style={styles.unreadBanner}>
             <LinearGradient
-              colors={["rgba(124,58,237,0.2)", "rgba(79,70,229,0.1)"]}
+              colors={["rgba(249,115,22,0.2)", "rgba(234,88,12,0.1)"]}
               style={styles.unreadGrad}
             >
               <View style={styles.unreadDot} />
@@ -89,7 +89,7 @@ export default function NotificationsScreen() {
       >
         {notifications.length === 0 ? (
           <View style={styles.emptyState}>
-            <Feather name="bell-off" size={40} color="#4F46E5" />
+            <Feather name="bell-off" size={40} color="#EA580C" />
             <Text style={styles.emptyTitle}>No notifications yet</Text>
             <Text style={styles.emptyText}>Activity on your parcels and trips will appear here</Text>
           </View>
@@ -125,7 +125,7 @@ export default function NotificationsScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   header: { paddingHorizontal: 20, paddingBottom: 16 },
   headerRow: {
     flexDirection: "row", alignItems: "center",
@@ -137,26 +137,26 @@ const styles = StyleSheet.create({
     alignItems: "center", justifyContent: "center",
   },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontFamily: "Inter_700Bold" },
-  markAll: { color: "#7C3AED", fontSize: 13, fontFamily: "Inter_600SemiBold" },
+  markAll: { color: "#F97316", fontSize: 13, fontFamily: "Inter_600SemiBold" },
   unreadBanner: { borderRadius: 12, overflow: "hidden" },
   unreadGrad: {
     flexDirection: "row", alignItems: "center", gap: 8,
     padding: 12, borderRadius: 12,
-    borderWidth: 1, borderColor: "rgba(124,58,237,0.2)",
+    borderWidth: 1, borderColor: "rgba(249,115,22,0.2)",
   },
-  unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#7C3AED" },
-  unreadText: { color: "#7C3AED", fontSize: 13, fontFamily: "Inter_500Medium" },
+  unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#F97316" },
+  unreadText: { color: "#F97316", fontSize: 13, fontFamily: "Inter_500Medium" },
   list: { flex: 1 },
   listContent: { padding: 16 },
   notifItem: {
     flexDirection: "row", alignItems: "center",
-    backgroundColor: "#1E1A3A", borderRadius: 16, padding: 14,
+    backgroundColor: "#1C1208", borderRadius: 16, padding: 14,
     marginBottom: 8, gap: 12,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.05)",
   },
   notifItemUnread: {
-    borderColor: "rgba(124,58,237,0.25)",
-    backgroundColor: "rgba(124,58,237,0.06)",
+    borderColor: "rgba(249,115,22,0.25)",
+    backgroundColor: "rgba(249,115,22,0.06)",
   },
   notifIcon: {
     width: 42, height: 42, borderRadius: 14,
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", marginBottom: 3,
   },
   notifTitle: { color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_600SemiBold" },
-  unreadIndicator: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#7C3AED" },
+  unreadIndicator: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#F97316" },
   notifBody: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_400Regular", lineHeight: 18, marginBottom: 4 },
   notifTime: { color: "#64748B", fontSize: 11, fontFamily: "Inter_400Regular" },
   emptyState: { alignItems: "center", paddingVertical: 60, gap: 12 },

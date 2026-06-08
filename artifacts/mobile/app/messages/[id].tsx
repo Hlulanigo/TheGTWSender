@@ -53,7 +53,7 @@ export default function ChatScreen() {
     >
       {/* Header */}
       <LinearGradient
-        colors={["#1A0D3D", "#0D0B1E"]}
+        colors={["#1C0D04", "#0F0A04"]}
         style={[styles.header, { paddingTop: topPad + 8 }]}
       >
         <View style={styles.headerRow}>
@@ -61,7 +61,7 @@ export default function ChatScreen() {
             <Feather name="arrow-left" size={22} color="#FFFFFF" />
           </TouchableOpacity>
           <View style={styles.headerCenter}>
-            <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.headerAvatar}>
+            <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.headerAvatar}>
               <Text style={styles.headerInitials}>{conv.otherInitials}</Text>
             </LinearGradient>
             <View>
@@ -73,7 +73,7 @@ export default function ChatScreen() {
             </View>
           </View>
           <TouchableOpacity style={styles.callBtn}>
-            <Feather name="phone" size={18} color="#7C3AED" />
+            <Feather name="phone" size={18} color="#F97316" />
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -90,10 +90,10 @@ export default function ChatScreen() {
         {conv.parcelId && (
           <View style={styles.contextBanner}>
             <LinearGradient
-              colors={["rgba(124,58,237,0.15)", "rgba(79,70,229,0.1)"]}
+              colors={["rgba(249,115,22,0.15)", "rgba(234,88,12,0.1)"]}
               style={styles.contextGrad}
             >
-              <Feather name="package" size={14} color="#7C3AED" />
+              <Feather name="package" size={14} color="#F97316" />
               <Text style={styles.contextText}>Delivery conversation</Text>
               <TouchableOpacity
                 onPress={() =>
@@ -117,7 +117,7 @@ export default function ChatScreen() {
               style={[styles.msgRow, isMe ? styles.msgRowMe : styles.msgRowOther]}
             >
               {!isMe && showTime && (
-                <LinearGradient colors={["#4F46E5", "#7C3AED"]} style={styles.msgAvatar}>
+                <LinearGradient colors={["#EA580C", "#F97316"]} style={styles.msgAvatar}>
                   <Text style={styles.msgAvatarText}>{conv.otherInitials}</Text>
                 </LinearGradient>
               )}
@@ -125,7 +125,7 @@ export default function ChatScreen() {
               <View style={styles.msgBubbleWrapper}>
                 {isMe ? (
                   <LinearGradient
-                    colors={["#7C3AED", "#4F46E5"]}
+                    colors={["#F97316", "#EA580C"]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={[styles.bubble, styles.bubbleMe]}
@@ -166,7 +166,7 @@ export default function ChatScreen() {
             style={styles.sendWrapper}
           >
             <LinearGradient
-              colors={text.trim() ? ["#7C3AED", "#3B82F6"] : ["#2A2A4A", "#2A2A4A"]}
+              colors={text.trim() ? ["#F97316", "#3B82F6"] : ["#2A2A4A", "#2A2A4A"]}
               style={styles.sendBtn}
             >
               <Feather
@@ -183,9 +183,9 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   notFoundText: { color: "#94A3B8", fontSize: 16, fontFamily: "Inter_400Regular" },
-  backLink: { color: "#7C3AED", fontSize: 15, fontFamily: "Inter_600SemiBold" },
+  backLink: { color: "#F97316", fontSize: 15, fontFamily: "Inter_600SemiBold" },
   header: { paddingHorizontal: 20, paddingBottom: 16 },
   headerRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   backBtn: {
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   onlineText: { color: "#10B981", fontSize: 11, fontFamily: "Inter_400Regular" },
   callBtn: {
     width: 40, height: 40, borderRadius: 20,
-    backgroundColor: "rgba(124,58,237,0.15)",
+    backgroundColor: "rgba(249,115,22,0.15)",
     alignItems: "center", justifyContent: "center",
   },
   messages: { flex: 1 },
@@ -214,10 +214,10 @@ const styles = StyleSheet.create({
   contextGrad: {
     flexDirection: "row", alignItems: "center", gap: 8,
     padding: 10, borderRadius: 12,
-    borderWidth: 1, borderColor: "rgba(124,58,237,0.2)",
+    borderWidth: 1, borderColor: "rgba(249,115,22,0.2)",
   },
   contextText: { color: "#94A3B8", fontSize: 12, fontFamily: "Inter_400Regular", flex: 1 },
-  contextLink: { color: "#7C3AED", fontSize: 12, fontFamily: "Inter_600SemiBold" },
+  contextLink: { color: "#F97316", fontSize: 12, fontFamily: "Inter_600SemiBold" },
   msgRow: { flexDirection: "row", marginBottom: 6, alignItems: "flex-end", gap: 8 },
   msgRowMe: { justifyContent: "flex-end" },
   msgRowOther: { justifyContent: "flex-start" },
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   bubble: { borderRadius: 18, paddingVertical: 10, paddingHorizontal: 14 },
   bubbleMe: { borderBottomRightRadius: 4 },
   bubbleOther: {
-    backgroundColor: "#1E1A3A",
+    backgroundColor: "#1C1208",
     borderWidth: 1, borderColor: "rgba(255,255,255,0.08)",
     borderBottomLeftRadius: 4,
   },
@@ -241,12 +241,12 @@ const styles = StyleSheet.create({
   msgTimeMe: { textAlign: "right" },
   inputBar: {
     paddingHorizontal: 16, paddingTop: 12,
-    backgroundColor: "#0D0B1E",
+    backgroundColor: "#0F0A04",
     borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)",
   },
   inputWrap: {
     flexDirection: "row", alignItems: "flex-end",
-    backgroundColor: "#1E1A3A", borderRadius: 24,
+    backgroundColor: "#1C1208", borderRadius: 24,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.08)",
     paddingLeft: 16, paddingRight: 6, paddingVertical: 6, gap: 8,
   },

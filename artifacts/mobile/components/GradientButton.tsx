@@ -28,7 +28,7 @@ export default function GradientButton({
   textStyle,
   loading,
   disabled,
-  gradientColors = ["#7C3AED", "#3B82F6"],
+  gradientColors = ["#F97316", "#3B82F6"],
   small,
 }: GradientButtonProps) {
   function handlePress() {

@@ -13,12 +13,12 @@ export default function NotFoundScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       <View style={[styles.screen, { paddingTop: topPad }]}>
         <LinearGradient
-          colors={["#1A0D3D", "#0D0B1E"]}
+          colors={["#1C0D04", "#0F0A04"]}
           style={StyleSheet.absoluteFill}
         />
         <View style={styles.content}>
           <LinearGradient
-            colors={["#7C3AED", "#4F46E5"]}
+            colors={["#F97316", "#EA580C"]}
             style={styles.iconCircle}
           >
             <Feather name="compass" size={40} color="#fff" />
@@ -27,12 +27,12 @@ export default function NotFoundScreen() {
           <Text style={styles.code}>404</Text>
           <Text style={styles.title}>Page Not Found</Text>
           <Text style={styles.sub}>
-            This screen doesn't exist in ParcelGo.
+            This screen doesn't exist in GTW.
           </Text>
 
           <Link href="/" style={styles.link}>
             <LinearGradient
-              colors={["#7C3AED", "#4F46E5", "#3B82F6"]}
+              colors={["#F97316", "#EA580C", "#3B82F6"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={styles.linkGrad}
@@ -50,7 +50,7 @@ export default function NotFoundScreen() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#0D0B1E",
+    backgroundColor: "#0F0A04",
   },
   content: {
     flex: 1,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   code: {
-    color: "rgba(124,58,237,0.35)",
+    color: "rgba(249,115,22,0.35)",
     fontSize: 72,
     fontFamily: "Inter_700Bold",
     lineHeight: 72,

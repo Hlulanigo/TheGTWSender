@@ -24,7 +24,7 @@ const CARRIER_STATS: Record<string, { deliveries: number; responseTime: string; 
 };
 
 const BADGE_COLORS: Record<string, [string, string]> = {
-  u2: ["#7C3AED", "#4F46E5"],
+  u2: ["#F97316", "#EA580C"],
   u3: ["#3B82F6", "#06B6D4"],
   u4: ["#10B981", "#059669"],
   u5: ["#F59E0B", "#D97706"],
@@ -58,7 +58,7 @@ export default function CarrierProfileScreen() {
       <View style={[styles.screen, { alignItems: "center", justifyContent: "center" }]}>
         <Text style={{ color: "#94A3B8", fontFamily: "Inter_400Regular" }}>Carrier not found</Text>
         <TouchableOpacity onPress={() => router.back()}>
-          <Text style={{ color: "#7C3AED", fontFamily: "Inter_600SemiBold", marginTop: 8 }}>Go back</Text>
+          <Text style={{ color: "#F97316", fontFamily: "Inter_600SemiBold", marginTop: 8 }}>Go back</Text>
         </TouchableOpacity>
       </View>
     );
@@ -67,7 +67,7 @@ export default function CarrierProfileScreen() {
   const stats = CARRIER_STATS[trip.travelerId] ?? { deliveries: 10, responseTime: "< 1 hr", joinDate: "2024", bio: "" };
   const reviews = getCarrierReviews(trip.travelerId);
   const avgRating = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : trip.travelerRating;
-  const gradColors = BADGE_COLORS[trip.travelerId] ?? ["#7C3AED", "#4F46E5"];
+  const gradColors = BADGE_COLORS[trip.travelerId] ?? ["#F97316", "#EA580C"];
 
   const otherTrips = trips.filter((t) => t.travelerId === trip.travelerId && t.status === "open");
 
@@ -78,7 +78,7 @@ export default function CarrierProfileScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <LinearGradient colors={["#1A0D3D", "#0D0B1E"]} style={[styles.hero, { paddingTop: topPad + 8 }]}>
+        <LinearGradient colors={["#1C0D04", "#0F0A04"]} style={[styles.hero, { paddingTop: topPad + 8 }]}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
             <Feather name="arrow-left" size={22} color="#FFFFFF" />
           </TouchableOpacity>
@@ -108,7 +108,7 @@ export default function CarrierProfileScreen() {
               </View>
               <View style={styles.badgeDot} />
               <View style={styles.badgeItem}>
-                <Feather name="shield" size={12} color="#7C3AED" />
+                <Feather name="shield" size={12} color="#F97316" />
                 <Text style={styles.badgeText}>Community Member</Text>
               </View>
             </View>
@@ -118,7 +118,7 @@ export default function CarrierProfileScreen() {
         <View style={styles.body}>
           {/* Stats */}
           <View style={styles.statsGrid}>
-            <LinearGradient colors={["rgba(124,58,237,0.2)", "rgba(124,58,237,0.05)"]} style={styles.statBox}>
+            <LinearGradient colors={["rgba(249,115,22,0.2)", "rgba(249,115,22,0.05)"]} style={styles.statBox}>
               <Text style={styles.statValue}>{stats.deliveries}</Text>
               <Text style={styles.statLabel}>Deliveries</Text>
             </LinearGradient>
@@ -149,9 +149,9 @@ export default function CarrierProfileScreen() {
             {otherTrips.map((t) => (
               <View key={t.id} style={styles.tripItem}>
                 <View style={styles.tripRoute}>
-                  <View style={[styles.routeDot, { backgroundColor: "#7C3AED" }]} />
+                  <View style={[styles.routeDot, { backgroundColor: "#F97316" }]} />
                   <Text style={styles.tripCity}>{t.fromCity}</Text>
-                  <Feather name="arrow-right" size={12} color="#4F46E5" />
+                  <Feather name="arrow-right" size={12} color="#EA580C" />
                   <Text style={styles.tripCity}>{t.toCity}</Text>
                   <View style={[styles.routeDot, { backgroundColor: "#3B82F6" }]} />
                 </View>
@@ -186,7 +186,7 @@ export default function CarrierProfileScreen() {
               {reviews.map((review) => (
                 <View key={review.id} style={styles.reviewCard}>
                   <View style={styles.reviewTop}>
-                    <LinearGradient colors={["#3B82F6", "#7C3AED"]} style={styles.reviewAvatar}>
+                    <LinearGradient colors={["#3B82F6", "#F97316"]} style={styles.reviewAvatar}>
                       <Text style={styles.reviewInitials}>{review.reviewerInitials}</Text>
                     </LinearGradient>
                     <View style={styles.reviewInfo}>
@@ -224,7 +224,7 @@ export default function CarrierProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   content: {},
   hero: { paddingHorizontal: 20, paddingBottom: 28 },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center", marginBottom: 20 },
@@ -246,10 +246,10 @@ const styles = StyleSheet.create({
   statLabel: { color: "#94A3B8", fontSize: 10, fontFamily: "Inter_400Regular", textAlign: "center" },
   section: { marginBottom: 24 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontFamily: "Inter_700Bold", marginBottom: 12 },
-  bioCard: { backgroundColor: "#1E1A3A", borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  bioCard: { backgroundColor: "#1C1208", borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
   bioText: { color: "#94A3B8", fontSize: 14, fontFamily: "Inter_400Regular", lineHeight: 21, marginBottom: 8 },
   joinDate: { color: "#64748B", fontSize: 12, fontFamily: "Inter_400Regular" },
-  tripItem: { backgroundColor: "#1E1A3A", borderRadius: 16, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  tripItem: { backgroundColor: "#1C1208", borderRadius: 16, padding: 14, marginBottom: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
   tripRoute: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 10 },
   routeDot: { width: 8, height: 8, borderRadius: 4 },
   tripCity: { color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_600SemiBold" },
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
   reviewsHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
   reviewsAvg: { flexDirection: "row", alignItems: "center", gap: 4 },
   reviewsAvgText: { color: "#F59E0B", fontSize: 13, fontFamily: "Inter_600SemiBold" },
-  reviewCard: { backgroundColor: "#1E1A3A", borderRadius: 16, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  reviewCard: { backgroundColor: "#1C1208", borderRadius: 16, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
   reviewTop: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 },
   reviewAvatar: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center" },
   reviewInitials: { color: "#fff", fontSize: 11, fontFamily: "Inter_700Bold" },
@@ -270,5 +270,5 @@ const styles = StyleSheet.create({
   reviewText: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_400Regular", lineHeight: 20, marginBottom: 8 },
   reviewParcel: { flexDirection: "row", alignItems: "center", gap: 4 },
   reviewParcelText: { color: "#64748B", fontSize: 11, fontFamily: "Inter_400Regular" },
-  bottomCta: { paddingHorizontal: 20, paddingTop: 12, backgroundColor: "#0D0B1E", borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)" },
+  bottomCta: { paddingHorizontal: 20, paddingTop: 12, backgroundColor: "#0F0A04", borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)" },
 });

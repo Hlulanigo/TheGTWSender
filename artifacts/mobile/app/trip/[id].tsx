@@ -65,7 +65,7 @@ export default function TripDetailScreen() {
       >
         {/* Header */}
         <LinearGradient
-          colors={["#0D1A3D", "#0D0B1E"]}
+          colors={["#1C0D04", "#0F0A04"]}
           style={[styles.header, { paddingTop: topPad + 8 }]}
         >
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
@@ -126,8 +126,8 @@ export default function TripDetailScreen() {
               <Text style={styles.metaValue}>{trip.date}</Text>
             </View>
             <View style={styles.metaItem}>
-              <LinearGradient colors={["rgba(124,58,237,0.2)", "rgba(124,58,237,0.05)"]} style={styles.metaIcon}>
-                <Feather name="clock" size={16} color="#7C3AED" />
+              <LinearGradient colors={["rgba(249,115,22,0.2)", "rgba(249,115,22,0.05)"]} style={styles.metaIcon}>
+                <Feather name="clock" size={16} color="#F97316" />
               </LinearGradient>
               <Text style={styles.metaLabel}>Departure</Text>
               <Text style={styles.metaValue}>{trip.departureTime}</Text>
@@ -194,7 +194,7 @@ export default function TripDetailScreen() {
           ) : pendingParcels.length === 0 ? (
             <View style={styles.section}>
               <View style={styles.emptyState}>
-                <Feather name="package" size={36} color="#4F46E5" />
+                <Feather name="package" size={36} color="#EA580C" />
                 <Text style={styles.emptyTitle}>No pending packages</Text>
                 <Text style={styles.emptyText}>Post a package request to book this trip</Text>
                 <GradientButton
@@ -212,10 +212,10 @@ export default function TripDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   notFound: { alignItems: "center", justifyContent: "center", gap: 12 },
   notFoundText: { color: "#94A3B8", fontSize: 16, fontFamily: "Inter_400Regular" },
-  backLink: { color: "#7C3AED", fontSize: 15, fontFamily: "Inter_600SemiBold" },
+  backLink: { color: "#F97316", fontSize: 15, fontFamily: "Inter_600SemiBold" },
   content: {},
   header: { paddingHorizontal: 20, paddingBottom: 28 },
   backBtn: {
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   body: { padding: 20 },
   metaGrid: { flexDirection: "row", gap: 10, marginBottom: 14 },
   metaItem: {
-    flex: 1, backgroundColor: "#1E1A3A",
+    flex: 1, backgroundColor: "#1C1208",
     borderRadius: 16, padding: 12, alignItems: "center",
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },

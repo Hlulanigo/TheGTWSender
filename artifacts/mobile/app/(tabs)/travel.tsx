@@ -92,7 +92,7 @@ export default function TravelScreen() {
     <View style={styles.screen}>
       {/* Header */}
       <LinearGradient
-        colors={["#0D1A3D", "#0D0B1E"]}
+        colors={["#1C0D04", "#0F0A04"]}
         style={[styles.header, { paddingTop: topPad + 16 }]}
       >
         <Text style={styles.headerTitle}>Earn by Traveling</Text>
@@ -264,7 +264,7 @@ export default function TravelScreen() {
               </View>
             ) : !showForm ? (
               <View style={styles.emptyState}>
-                <Feather name="navigation" size={40} color="#4F46E5" />
+                <Feather name="navigation" size={40} color="#EA580C" />
                 <Text style={styles.emptyTitle}>No trips posted yet</Text>
                 <Text style={styles.emptyText}>Post your travel route and start earning</Text>
               </View>
@@ -282,7 +282,7 @@ export default function TravelScreen() {
 
             {pendingParcels.length === 0 ? (
               <View style={styles.emptyState}>
-                <Feather name="inbox" size={40} color="#4F46E5" />
+                <Feather name="inbox" size={40} color="#EA580C" />
                 <Text style={styles.emptyTitle}>No parcels available</Text>
                 <Text style={styles.emptyText}>New delivery requests will appear here</Text>
               </View>
@@ -292,14 +292,14 @@ export default function TravelScreen() {
                   <View style={styles.parcelRow}>
                     <View style={styles.parcelInfoBlock}>
                       <View style={styles.parcelTopRow}>
-                        <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.parcelIcon}>
+                        <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.parcelIcon}>
                           <Feather name="package" size={16} color="#fff" />
                         </LinearGradient>
                         <View style={styles.parcelTexts}>
                           <Text style={styles.parcelTitle}>{p.title}</Text>
                           <View style={styles.parcelRoute}>
                             <Text style={styles.parcelCity}>{p.fromCity}</Text>
-                            <Feather name="arrow-right" size={11} color="#4F46E5" />
+                            <Feather name="arrow-right" size={11} color="#EA580C" />
                             <Text style={styles.parcelCity}>{p.toCity}</Text>
                           </View>
                         </View>
@@ -350,7 +350,7 @@ export default function TravelScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   header: { paddingHorizontal: 20, paddingBottom: 0 },
   headerTitle: { color: "#FFFFFF", fontSize: 26, fontFamily: "Inter_700Bold", marginBottom: 16 },
   earningsBanner: { borderRadius: 18, overflow: "hidden", marginBottom: 16 },
@@ -384,12 +384,12 @@ const styles = StyleSheet.create({
   postTripGrad: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 16, gap: 10 },
   postTripText: { color: "#fff", fontSize: 16, fontFamily: "Inter_600SemiBold" },
   formCard: {
-    backgroundColor: "#1E1A3A", borderRadius: 20, padding: 18,
+    backgroundColor: "#1C1208", borderRadius: 20, padding: 18,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", marginBottom: 20,
   },
   formHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 16 },
   formTitle: { color: "#FFFFFF", fontSize: 16, fontFamily: "Inter_700Bold" },
-  routeCard: { backgroundColor: "#14122A", borderRadius: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", marginBottom: 14 },
+  routeCard: { backgroundColor: "#150C04", borderRadius: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", marginBottom: 14 },
   routeField: { flexDirection: "row", alignItems: "center", padding: 12, gap: 10 },
   routeDot: { width: 10, height: 10, borderRadius: 5 },
   routeInput: { flex: 1, color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_400Regular" },
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   fieldHalf: { flex: 1 },
   inputWrap: {
     flexDirection: "row", alignItems: "center",
-    backgroundColor: "#14122A", borderRadius: 12,
+    backgroundColor: "#150C04", borderRadius: 12,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
     paddingHorizontal: 12, marginBottom: 14,
   },
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
   sizeRow: { flexDirection: "row", gap: 8, marginBottom: 16 },
   sizeChip: { flex: 1, borderRadius: 12, overflow: "hidden" },
   sizeChipGrad: { paddingVertical: 10, alignItems: "center" },
-  sizeChipInner: { paddingVertical: 10, alignItems: "center", backgroundColor: "#14122A", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  sizeChipInner: { paddingVertical: 10, alignItems: "center", backgroundColor: "#150C04", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
   sizeChipText: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_500Medium" },
   sizeChipTextActive: { color: "#fff", fontSize: 13, fontFamily: "Inter_600SemiBold" },
   tripsSection: {},
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
   carryTitle: { color: "#FFFFFF", fontSize: 18, fontFamily: "Inter_700Bold", marginBottom: 4 },
   carrySub: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_400Regular", lineHeight: 19 },
   parcelWithAction: {
-    backgroundColor: "#1E1A3A", borderRadius: 18, padding: 14,
+    backgroundColor: "#1C1208", borderRadius: 18, padding: 14,
     marginBottom: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },
   parcelRow: { marginBottom: 12 },

@@ -24,7 +24,7 @@ const SIZE_LABELS: Record<string, string> = {
 
 const STATUS_COLORS: Record<string, [string, string]> = {
   pending: ["#F59E0B", "#D97706"],
-  matched: ["#7C3AED", "#4F46E5"],
+  matched: ["#F97316", "#EA580C"],
   in_transit: ["#3B82F6", "#06B6D4"],
   delivered: ["#10B981", "#059669"],
 };
@@ -50,7 +50,7 @@ function ProgressBar({ steps }: { steps: { completed: boolean }[] }) {
     <View style={pb.wrap}>
       <View style={pb.track}>
         <LinearGradient
-          colors={["#7C3AED", "#3B82F6"]}
+          colors={["#F97316", "#3B82F6"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={[pb.fill, { width: `${pct}%` as any }]}
@@ -118,7 +118,7 @@ export default function ParcelDetailScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <LinearGradient colors={["#1A0D3D", "#0D0B1E"]} style={[styles.header, { paddingTop: topPad + 8 }]}>
+        <LinearGradient colors={["#1C0D04", "#0F0A04"]} style={[styles.header, { paddingTop: topPad + 8 }]}>
           <View style={styles.headerTopRow}>
             <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
               <Feather name="arrow-left" size={22} color="#FFFFFF" />
@@ -162,7 +162,7 @@ export default function ParcelDetailScreen() {
             <Text style={styles.cardLabel}>Route</Text>
             <View style={styles.routeRow}>
               <View style={styles.routeEndpoint}>
-                <View style={[styles.routeDot, { backgroundColor: "#7C3AED" }]} />
+                <View style={[styles.routeDot, { backgroundColor: "#F97316" }]} />
                 <View>
                   <Text style={styles.routeCity}>{parcel.fromCity}</Text>
                   <Text style={styles.routeFull}>{parcel.from}</Text>
@@ -170,7 +170,7 @@ export default function ParcelDetailScreen() {
               </View>
               <View style={styles.routeArrow}>
                 <View style={styles.routeLine} />
-                <LinearGradient colors={["#7C3AED", "#3B82F6"]} style={styles.arrowCircle}>
+                <LinearGradient colors={["#F97316", "#3B82F6"]} style={styles.arrowCircle}>
                   <Feather name="chevrons-right" size={12} color="#fff" />
                 </LinearGradient>
                 <View style={styles.routeLine} />
@@ -190,7 +190,7 @@ export default function ParcelDetailScreen() {
             <Text style={styles.cardLabel}>Package Details</Text>
             <View style={styles.detailsGrid}>
               <View style={styles.detailItem}>
-                <Feather name="layers" size={14} color="#7C3AED" />
+                <Feather name="layers" size={14} color="#F97316" />
                 <Text style={styles.detailLabel}>Weight</Text>
                 <Text style={styles.detailValue}>{parcel.weight}kg</Text>
               </View>
@@ -223,7 +223,7 @@ export default function ParcelDetailScreen() {
             <View style={styles.card}>
               <Text style={styles.cardLabel}>Your Carrier</Text>
               <TouchableOpacity onPress={handleViewCarrier} activeOpacity={0.85} style={styles.carrierRow}>
-                <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.carrierAvatar}>
+                <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.carrierAvatar}>
                   <Text style={styles.carrierInitials}>{matchedTrip.travelerInitials}</Text>
                 </LinearGradient>
                 <View style={styles.carrierInfo}>
@@ -237,8 +237,8 @@ export default function ParcelDetailScreen() {
                 </View>
                 <View style={styles.carrierActions}>
                   <TouchableOpacity onPress={handleMessageCarrier} style={styles.actionCircle} activeOpacity={0.8}>
-                    <LinearGradient colors={["rgba(124,58,237,0.25)", "rgba(124,58,237,0.15)"]} style={styles.actionCircleGrad}>
-                      <Feather name="message-circle" size={17} color="#7C3AED" />
+                    <LinearGradient colors={["rgba(249,115,22,0.25)", "rgba(249,115,22,0.15)"]} style={styles.actionCircleGrad}>
+                      <Feather name="message-circle" size={17} color="#F97316" />
                     </LinearGradient>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={handleViewCarrier} style={styles.actionCircle} activeOpacity={0.8}>
@@ -308,10 +308,10 @@ export default function ParcelDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   notFound: { alignItems: "center", justifyContent: "center", gap: 12 },
   notFoundText: { color: "#94A3B8", fontSize: 16, fontFamily: "Inter_400Regular" },
-  backLink: { color: "#7C3AED", fontSize: 15, fontFamily: "Inter_600SemiBold" },
+  backLink: { color: "#F97316", fontSize: 15, fontFamily: "Inter_600SemiBold" },
   content: {},
   header: { paddingHorizontal: 20, paddingBottom: 24 },
   headerTopRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 20 },
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
   etaText: { color: "#94A3B8", fontSize: 12, fontFamily: "Inter_400Regular" },
   progressWrap: { marginTop: 4 },
   body: { padding: 20 },
-  card: { backgroundColor: "#1E1A3A", borderRadius: 20, padding: 16, marginBottom: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  card: { backgroundColor: "#1C1208", borderRadius: 20, padding: 16, marginBottom: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
   cardLabel: { color: "#94A3B8", fontSize: 11, fontFamily: "Inter_500Medium", textTransform: "uppercase", letterSpacing: 0.8, marginBottom: 14 },
   routeRow: { flexDirection: "row", alignItems: "center" },
   routeEndpoint: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8 },
@@ -336,10 +336,10 @@ const styles = StyleSheet.create({
   routeCity: { color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_600SemiBold" },
   routeFull: { color: "#64748B", fontSize: 11, fontFamily: "Inter_400Regular", marginTop: 1 },
   routeArrow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 6 },
-  routeLine: { width: 14, height: 1, backgroundColor: "rgba(124,58,237,0.3)" },
+  routeLine: { width: 14, height: 1, backgroundColor: "rgba(249,115,22,0.3)" },
   arrowCircle: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   detailsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
-  detailItem: { width: "45%", backgroundColor: "#14122A", borderRadius: 12, padding: 12, gap: 4 },
+  detailItem: { width: "45%", backgroundColor: "#150C04", borderRadius: 12, padding: 12, gap: 4 },
   detailLabel: { color: "#64748B", fontSize: 11, fontFamily: "Inter_400Regular" },
   detailValue: { color: "#FFFFFF", fontSize: 15, fontFamily: "Inter_600SemiBold" },
   description: { marginTop: 14, paddingTop: 14, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)" },

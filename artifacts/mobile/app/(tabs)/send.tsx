@@ -159,7 +159,7 @@ export default function SendScreen() {
   if (submittedParcelId) {
     return (
       <View style={[styles.screen, styles.successScreen, { paddingTop: topPad + 20 }]}>
-        <LinearGradient colors={["#7C3AED", "#3B82F6"]} style={styles.successIcon}>
+        <LinearGradient colors={["#F97316", "#3B82F6"]} style={styles.successIcon}>
           <Feather name="check" size={36} color="#fff" />
         </LinearGradient>
         <Text style={styles.successTitle}>Carrier Requested!</Text>
@@ -172,7 +172,7 @@ export default function SendScreen() {
           style={styles.successBtn}
         />
         <TouchableOpacity onPress={() => { handleReset(); router.push("/(tabs)/messages"); }} style={styles.msgBtn}>
-          <Feather name="message-circle" size={16} color="#7C3AED" />
+          <Feather name="message-circle" size={16} color="#F97316" />
           <Text style={styles.msgBtnText}>Message Carrier</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleReset} style={styles.anotherBtn}>
@@ -186,7 +186,7 @@ export default function SendScreen() {
     <View style={styles.screen}>
       {/* Header with step indicator */}
       <LinearGradient
-        colors={["#1A0D3D", "#0D0B1E"]}
+        colors={["#1C0D04", "#0F0A04"]}
         style={[styles.header, { paddingTop: topPad + 12 }]}
       >
         <View style={styles.headerRow}>
@@ -209,11 +209,11 @@ export default function SendScreen() {
           {[1, 2, 3].map((s) => (
             <View key={s} style={styles.dotWrapper}>
               {s < step || (step === 4) ? (
-                <LinearGradient colors={["#7C3AED", "#3B82F6"]} style={styles.dotFilled}>
+                <LinearGradient colors={["#F97316", "#3B82F6"]} style={styles.dotFilled}>
                   <Feather name="check" size={10} color="#fff" />
                 </LinearGradient>
               ) : s === step ? (
-                <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.dotActive} />
+                <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.dotActive} />
               ) : (
                 <View style={styles.dotInactive} />
               )}
@@ -242,7 +242,7 @@ export default function SendScreen() {
           <View>
             <View style={styles.routeCard}>
               <View style={styles.routeField}>
-                <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.routeIconBox}>
+                <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.routeIconBox}>
                   <Feather name="map-pin" size={14} color="#fff" />
                 </LinearGradient>
                 <TextInput
@@ -292,10 +292,10 @@ export default function SendScreen() {
             {(from || to) && (
               <View style={styles.previewBanner}>
                 <LinearGradient
-                  colors={["rgba(124,58,237,0.15)", "rgba(124,58,237,0.05)"]}
+                  colors={["rgba(249,115,22,0.15)", "rgba(249,115,22,0.05)"]}
                   style={styles.previewGrad}
                 >
-                  <Feather name="users" size={16} color="#7C3AED" />
+                  <Feather name="users" size={16} color="#F97316" />
                   <Text style={styles.previewText}>
                     <Text style={styles.previewCount}>{carriersToShow.length} carrier{carriersToShow.length !== 1 ? "s" : ""}</Text>
                     {" "}available on this route
@@ -336,7 +336,7 @@ export default function SendScreen() {
                       style={[styles.sizeCard, active && styles.sizeCardActive]}
                     >
                       {active ? (
-                        <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.sizeCardGrad}>
+                        <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.sizeCardGrad}>
                           <Feather name={s.icon as any} size={20} color="#fff" />
                           <Text style={styles.sizeLabelActive}>{s.label}</Text>
                           <Text style={styles.sizeDescActive}>{s.desc}</Text>
@@ -382,7 +382,7 @@ export default function SendScreen() {
                       style={styles.handlingChip}
                     >
                       {active ? (
-                        <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.handlingGrad}>
+                        <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.handlingGrad}>
                           <Feather name={h.icon as any} size={13} color="#fff" />
                           <Text style={styles.handlingTextActive}>{h.label}</Text>
                         </LinearGradient>
@@ -489,7 +489,7 @@ export default function SendScreen() {
           <View>
             {carriersToShow.length === 0 ? (
               <View style={styles.noCarriers}>
-                <Feather name="compass" size={36} color="#4F46E5" />
+                <Feather name="compass" size={36} color="#EA580C" />
                 <Text style={styles.noCarriersTitle}>No carriers available yet</Text>
                 <Text style={styles.noCarriersText}>
                   Your package request is posted. Carriers will be notified and can accept it.
@@ -565,7 +565,7 @@ export default function SendScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   header: { paddingHorizontal: 20, paddingBottom: 20 },
   headerRow: {
     flexDirection: "row", alignItems: "center",
@@ -584,13 +584,13 @@ const styles = StyleSheet.create({
   dotActive: { width: 24, height: 24, borderRadius: 12 },
   dotInactive: { width: 24, height: 24, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.1)", borderWidth: 2, borderColor: "rgba(255,255,255,0.15)" },
   dotLine: { width: 32, height: 2, backgroundColor: "rgba(255,255,255,0.1)", marginHorizontal: 4 },
-  dotLineActive: { backgroundColor: "#7C3AED" },
+  dotLineActive: { backgroundColor: "#F97316" },
   stepTitle: { color: "#FFFFFF", fontSize: 22, fontFamily: "Inter_700Bold", textAlign: "center", marginBottom: 4 },
   stepSub: { color: "#94A3B8", fontSize: 14, fontFamily: "Inter_400Regular", textAlign: "center" },
   body: { flex: 1 },
   bodyContent: { padding: 20 },
   routeCard: {
-    backgroundColor: "#1E1A3A", borderRadius: 20,
+    backgroundColor: "#1C1208", borderRadius: 20,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
     marginBottom: 20, overflow: "hidden",
   },
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
   },
   inputWrap: {
     flexDirection: "row", alignItems: "center",
-    backgroundColor: "#1E1A3A", borderRadius: 14,
+    backgroundColor: "#1C1208", borderRadius: 14,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
     paddingHorizontal: 14,
   },
@@ -627,15 +627,15 @@ const styles = StyleSheet.create({
   previewGrad: {
     flexDirection: "row", alignItems: "center", gap: 10,
     padding: 14, borderRadius: 14,
-    borderWidth: 1, borderColor: "rgba(124,58,237,0.2)",
+    borderWidth: 1, borderColor: "rgba(249,115,22,0.2)",
   },
   previewText: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_400Regular" },
-  previewCount: { color: "#A78BFA", fontFamily: "Inter_600SemiBold" },
+  previewCount: { color: "#FED7AA", fontFamily: "Inter_600SemiBold" },
   sizeGrid: { flexDirection: "row", gap: 10 },
   sizeCard: { flex: 1, borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
   sizeCardActive: { borderColor: "transparent" },
   sizeCardGrad: { padding: 14, alignItems: "center", gap: 4 },
-  sizeCardInner: { padding: 14, alignItems: "center", gap: 4, backgroundColor: "#1E1A3A" },
+  sizeCardInner: { padding: 14, alignItems: "center", gap: 4, backgroundColor: "#1C1208" },
   sizeLabel: { color: "#94A3B8", fontSize: 12, fontFamily: "Inter_600SemiBold" },
   sizeLabelActive: { color: "#fff", fontSize: 12, fontFamily: "Inter_600SemiBold" },
   sizeDesc: { color: "#64748B", fontSize: 10, fontFamily: "Inter_400Regular", textAlign: "center" },
@@ -646,7 +646,7 @@ const styles = StyleSheet.create({
   handlingInactive: {
     flexDirection: "row", alignItems: "center", gap: 6,
     paddingVertical: 8, paddingHorizontal: 12,
-    backgroundColor: "#1E1A3A", borderRadius: 20,
+    backgroundColor: "#1C1208", borderRadius: 20,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.08)",
   },
   handlingText: { color: "#64748B", fontSize: 12, fontFamily: "Inter_500Medium" },
@@ -667,14 +667,14 @@ const styles = StyleSheet.create({
   suggestRow: { flexDirection: "row", gap: 10 },
   suggestChip: {
     flex: 1, paddingVertical: 10, borderRadius: 12,
-    backgroundColor: "#1E1A3A", alignItems: "center",
+    backgroundColor: "#1C1208", alignItems: "center",
     borderWidth: 1, borderColor: "rgba(255,255,255,0.07)",
   },
-  suggestChipActive: { borderColor: "#7C3AED", backgroundColor: "rgba(124,58,237,0.15)" },
+  suggestChipActive: { borderColor: "#F97316", backgroundColor: "rgba(249,115,22,0.15)" },
   suggestText: { color: "#64748B", fontSize: 14, fontFamily: "Inter_600SemiBold" },
-  suggestTextActive: { color: "#A78BFA" },
+  suggestTextActive: { color: "#FED7AA" },
   summaryCard: {
-    backgroundColor: "#1E1A3A", borderRadius: 18, padding: 16,
+    backgroundColor: "#1C1208", borderRadius: 18, padding: 16,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", marginBottom: 14,
   },
   summaryTitle: { color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_700Bold", marginBottom: 12 },
@@ -702,7 +702,7 @@ const styles = StyleSheet.create({
   orLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.07)" },
   orText: { color: "#64748B", fontSize: 13, fontFamily: "Inter_400Regular" },
   postAllBtn: {
-    backgroundColor: "#1E1A3A", borderRadius: 16, padding: 16,
+    backgroundColor: "#1C1208", borderRadius: 16, padding: 16,
     alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)",
   },
   postAllText: { color: "#FFFFFF", fontSize: 15, fontFamily: "Inter_600SemiBold" },
@@ -734,7 +734,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", alignItems: "center", gap: 8,
     paddingVertical: 12, marginBottom: 8,
   },
-  msgBtnText: { color: "#7C3AED", fontSize: 15, fontFamily: "Inter_600SemiBold" },
+  msgBtnText: { color: "#F97316", fontSize: 15, fontFamily: "Inter_600SemiBold" },
   anotherBtn: { paddingVertical: 12 },
   anotherText: { color: "#64748B", fontSize: 14, fontFamily: "Inter_500Medium" },
 });

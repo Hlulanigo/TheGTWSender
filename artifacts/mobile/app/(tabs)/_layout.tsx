@@ -43,12 +43,12 @@ function ClassicTabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#7C3AED",
+        tabBarActiveTintColor: "#F97316",
         tabBarInactiveTintColor: "#64748B",
         headerShown: false,
         tabBarStyle: {
           position: "absolute",
-          backgroundColor: isIOS ? "transparent" : "#0D0B1E",
+          backgroundColor: isIOS ? "transparent" : "#0F0A04",
           borderTopWidth: 1,
           borderTopColor: "rgba(255,255,255,0.06)",
           elevation: 0,
@@ -58,7 +58,7 @@ function ClassicTabLayout() {
           isIOS ? (
             <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill} />
           ) : isWeb ? (
-            <View style={[StyleSheet.absoluteFill, { backgroundColor: "#0D0B1E" }]} />
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: "#0F0A04" }]} />
           ) : null,
       }}
     >

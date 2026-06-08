@@ -23,7 +23,7 @@ export default function MessagesTabScreen() {
   return (
     <View style={styles.screen}>
       <LinearGradient
-        colors={["#1A0D3D", "#0D0B1E"]}
+        colors={["#1C0D04", "#0F0A04"]}
         style={[styles.header, { paddingTop: topPad + 16 }]}
       >
         <View style={styles.headerRow}>
@@ -38,7 +38,7 @@ export default function MessagesTabScreen() {
             )}
           </View>
           {totalUnread > 0 && (
-            <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.unreadBubble}>
+            <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.unreadBubble}>
               <Text style={styles.unreadBubbleText}>{totalUnread}</Text>
             </LinearGradient>
           )}
@@ -55,7 +55,7 @@ export default function MessagesTabScreen() {
       >
         {conversations.length === 0 ? (
           <View style={styles.emptyState}>
-            <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.emptyIcon}>
+            <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.emptyIcon}>
               <Feather name="message-circle" size={28} color="#fff" />
             </LinearGradient>
             <Text style={styles.emptyTitle}>No conversations yet</Text>
@@ -71,7 +71,7 @@ export default function MessagesTabScreen() {
               activeOpacity={0.8}
             >
               <LinearGradient
-                colors={["#7C3AED", "#4F46E5"]}
+                colors={["#F97316", "#EA580C"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.sendFirstGrad}
@@ -99,7 +99,7 @@ export default function MessagesTabScreen() {
                   style={[styles.convItem, conv.unreadCount > 0 && styles.convItemUnread]}
                 >
                   <LinearGradient
-                    colors={["#7C3AED", "#4F46E5"]}
+                    colors={["#F97316", "#EA580C"]}
                     style={styles.convAvatar}
                   >
                     <Text style={styles.convInitials}>{conv.otherInitials}</Text>
@@ -111,7 +111,7 @@ export default function MessagesTabScreen() {
                     </View>
                     {parcel && (
                       <View style={styles.parcelTag}>
-                        <Feather name="package" size={10} color="#7C3AED" />
+                        <Feather name="package" size={10} color="#F97316" />
                         <Text style={styles.parcelTagText} numberOfLines={1}>
                           {parcel.title}
                         </Text>
@@ -132,7 +132,7 @@ export default function MessagesTabScreen() {
                       </Text>
                       {conv.unreadCount > 0 && (
                         <LinearGradient
-                          colors={["#7C3AED", "#4F46E5"]}
+                          colors={["#F97316", "#EA580C"]}
                           style={styles.unreadBadge}
                         >
                           <Text style={styles.unreadCount}>{conv.unreadCount}</Text>
@@ -151,7 +151,7 @@ export default function MessagesTabScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   header: { paddingHorizontal: 20, paddingBottom: 20 },
   headerRow: {
     flexDirection: "row", alignItems: "flex-start",
@@ -170,13 +170,13 @@ const styles = StyleSheet.create({
   listContent: { padding: 16 },
   convItem: {
     flexDirection: "row", alignItems: "flex-start",
-    backgroundColor: "#1E1A3A", borderRadius: 18, padding: 14,
+    backgroundColor: "#1C1208", borderRadius: 18, padding: 14,
     marginBottom: 10, gap: 12,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.05)",
   },
   convItemUnread: {
-    borderColor: "rgba(124,58,237,0.3)",
-    backgroundColor: "rgba(124,58,237,0.06)",
+    borderColor: "rgba(249,115,22,0.3)",
+    backgroundColor: "rgba(249,115,22,0.06)",
   },
   convAvatar: {
     width: 50, height: 50, borderRadius: 25,
@@ -192,12 +192,12 @@ const styles = StyleSheet.create({
   convTime: { color: "#64748B", fontSize: 12, fontFamily: "Inter_400Regular" },
   parcelTag: {
     flexDirection: "row", alignItems: "center", gap: 5,
-    backgroundColor: "rgba(124,58,237,0.12)",
+    backgroundColor: "rgba(249,115,22,0.12)",
     borderRadius: 8, paddingVertical: 4, paddingHorizontal: 8,
     marginBottom: 6, alignSelf: "flex-start",
   },
   parcelTagText: {
-    color: "#A78BFA", fontSize: 11, fontFamily: "Inter_500Medium", maxWidth: 80,
+    color: "#FED7AA", fontSize: 11, fontFamily: "Inter_500Medium", maxWidth: 80,
   },
   parcelTagRoute: { color: "#64748B", fontSize: 11, fontFamily: "Inter_400Regular" },
   convBottomRow: {

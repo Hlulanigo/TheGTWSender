@@ -23,7 +23,7 @@ export default function TripCard({ trip, onPress, onBook, onViewCarrier }: TripC
     >
       <View style={styles.card}>
         <LinearGradient
-          colors={["#7C3AED", "#3B82F6"]}
+          colors={["#F97316", "#3B82F6"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.accentLine}
@@ -40,7 +40,7 @@ export default function TripCard({ trip, onPress, onBook, onViewCarrier }: TripC
           style={styles.headerTouch}
         >
           <View style={styles.header}>
-            <LinearGradient colors={["#7C3AED", "#4F46E5"]} style={styles.avatar}>
+            <LinearGradient colors={["#F97316", "#EA580C"]} style={styles.avatar}>
               <Text style={styles.avatarText}>{trip.travelerInitials}</Text>
             </LinearGradient>
             <View style={styles.headerInfo}>
@@ -65,12 +65,12 @@ export default function TripCard({ trip, onPress, onBook, onViewCarrier }: TripC
 
         <View style={styles.routeRow}>
           <View style={styles.routeEndpoint}>
-            <View style={[styles.dot, { backgroundColor: "#7C3AED" }]} />
+            <View style={[styles.dot, { backgroundColor: "#F97316" }]} />
             <Text style={styles.cityLabel}>{trip.fromCity}</Text>
           </View>
           <View style={styles.routeMiddle}>
             <View style={styles.routeDash} />
-            <Feather name="chevrons-right" size={14} color="#4F46E5" />
+            <Feather name="chevrons-right" size={14} color="#EA580C" />
             <View style={styles.routeDash} />
           </View>
           <View style={styles.routeEndpoint}>
@@ -103,7 +103,7 @@ export default function TripCard({ trip, onPress, onBook, onViewCarrier }: TripC
               style={styles.bookBtn}
             >
               <LinearGradient
-                colors={["#7C3AED", "#3B82F6"]}
+                colors={["#F97316", "#3B82F6"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.bookGradient}
@@ -122,7 +122,7 @@ export default function TripCard({ trip, onPress, onBook, onViewCarrier }: TripC
 
 const styles = StyleSheet.create({
   container: { marginBottom: 12 },
-  card: { backgroundColor: "#1E1A3A", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  card: { backgroundColor: "#1C1208", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
   accentLine: { height: 3 },
   headerTouch: {},
   header: { flexDirection: "row", alignItems: "center", padding: 16, paddingBottom: 10 },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   ratingRow: { flexDirection: "row", alignItems: "center", gap: 3, marginTop: 2 },
   ratingText: { color: "#F59E0B", fontSize: 11, fontFamily: "Inter_500Medium" },
   ratingDot: { width: 2, height: 2, borderRadius: 1, backgroundColor: "#64748B", marginHorizontal: 2 },
-  profileLink: { color: "#7C3AED", fontSize: 11, fontFamily: "Inter_500Medium" },
+  profileLink: { color: "#F97316", fontSize: 11, fontFamily: "Inter_500Medium" },
   priceBlock: { flexDirection: "row", alignItems: "baseline", gap: 1 },
   priceValue: { color: "#FFFFFF", fontSize: 22, fontFamily: "Inter_700Bold" },
   priceUnit: { color: "#94A3B8", fontSize: 12, fontFamily: "Inter_400Regular" },
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   dot: { width: 8, height: 8, borderRadius: 4 },
   cityLabel: { color: "#FFFFFF", fontSize: 14, fontFamily: "Inter_600SemiBold" },
   routeMiddle: { flex: 1, flexDirection: "row", alignItems: "center", paddingHorizontal: 6 },
-  routeDash: { flex: 1, height: 1, backgroundColor: "rgba(124,58,237,0.3)" },
+  routeDash: { flex: 1, height: 1, backgroundColor: "rgba(249,115,22,0.3)" },
   footer: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 14 },
   metaRow: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
   metaChip: { flexDirection: "row", alignItems: "center", gap: 4 },

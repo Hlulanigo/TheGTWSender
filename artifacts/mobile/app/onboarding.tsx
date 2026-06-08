@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Dimensions,
   Platform,
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
@@ -21,9 +22,9 @@ const SLIDES = [
   {
     key: "send",
     icon: "package" as const,
-    gradColors: ["#7C3AED", "#4F46E5"] as [string, string],
-    bgColors: ["#1A0D3D", "#0D0B1E"] as [string, string],
-    accentColor: "#A78BFA",
+    gradColors: ["#F97316", "#EA580C"] as [string, string],
+    bgColors: ["#1C0D04", "#0F0A04"] as [string, string],
+    accentColor: "#FED7AA",
     title: "Send Anything,\nAnywhere",
     subtitle: "Ship packages across the country through people already traveling your route. Fast, affordable, and personal.",
     feature1: { icon: "zap" as const, text: "Same-day matching with travelers" },
@@ -33,7 +34,7 @@ const SLIDES = [
     key: "track",
     icon: "map-pin" as const,
     gradColors: ["#3B82F6", "#06B6D4"] as [string, string],
-    bgColors: ["#0D1A3D", "#0D0B1E"] as [string, string],
+    bgColors: ["#1C0D04", "#0F0A04"] as [string, string],
     accentColor: "#93C5FD",
     title: "Track Every\nStep Live",
     subtitle: "Real-time status updates from the moment your package is picked up to the final delivery.",
@@ -44,7 +45,7 @@ const SLIDES = [
     key: "trust",
     icon: "star" as const,
     gradColors: ["#10B981", "#059669"] as [string, string],
-    bgColors: ["#0D2B1F", "#0D0B1E"] as [string, string],
+    bgColors: ["#1C0D04", "#0F0A04"] as [string, string],
     accentColor: "#6EE7B7",
     title: "Trusted\nCommunity",
     subtitle: "Every carrier is identity-verified with real reviews from past senders. Your package is always in safe hands.",
@@ -109,8 +110,16 @@ export default function OnboardingScreen() {
           <LinearGradient
             key={s.key}
             colors={s.bgColors}
-            style={[styles.slide, { width, paddingTop: topPad + 56 }]}
+            style={[styles.slide, { width, paddingTop: topPad + 40 }]}
           >
+            {/* Logo */}
+            <Image
+              source={require("@/assets/logo.png")}
+              style={styles.slideLogo}
+              resizeMode="contain"
+              tintColor="#F97316"
+            />
+
             {/* Icon */}
             <LinearGradient colors={s.gradColors} style={styles.iconRing}>
               <View style={styles.iconInner}>
@@ -145,7 +154,7 @@ export default function OnboardingScreen() {
 
       {/* Bottom controls */}
       <LinearGradient
-        colors={["transparent", "#0D0B1E", "#0D0B1E"]}
+        colors={["transparent", "#0F0A04", "#0F0A04"]}
         style={[styles.bottomControls, { paddingBottom: bottomPad + 24 }]}
       >
         {/* Dots */}
@@ -198,7 +207,7 @@ export default function OnboardingScreen() {
         {/* Login shortcut */}
         <TouchableOpacity onPress={handleGetStarted} style={styles.loginBtn}>
           <Text style={styles.loginText}>Already have an account? </Text>
-          <Text style={[styles.loginText, { color: "#7C3AED", fontFamily: "Inter_600SemiBold" }]}>Sign In</Text>
+          <Text style={[styles.loginText, { color: "#F97316", fontFamily: "Inter_600SemiBold" }]}>Sign In</Text>
         </TouchableOpacity>
       </LinearGradient>
     </View>
@@ -206,11 +215,12 @@ export default function OnboardingScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: "#0D0B1E" },
+  screen: { flex: 1, backgroundColor: "#0F0A04" },
   skipBtn: { position: "absolute", right: 20, zIndex: 10 },
   skipText: { color: "#64748B", fontSize: 14, fontFamily: "Inter_500Medium" },
   slides: { flex: 1 },
   slide: { alignItems: "center", paddingHorizontal: 32, paddingBottom: 200 },
+  slideLogo: { width: 110, height: 38, marginBottom: 28 },
   iconRing: { width: 160, height: 160, borderRadius: 80, padding: 4, alignItems: "center", justifyContent: "center", marginBottom: 36, opacity: 0.9 },
   iconInner: { width: 152, height: 152, borderRadius: 76, backgroundColor: "rgba(13,11,30,0.5)", alignItems: "center", justifyContent: "center" },
   iconCircle: { width: 100, height: 100, borderRadius: 50, alignItems: "center", justifyContent: "center" },
