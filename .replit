@@ -63,3 +63,9 @@ channel = "stable-25_05"
 
 [userenv.shared]
 EXPO_PUBLIC_API_URL = "https://gtw-ui-createcontinue-5--alexandra051.replit.app"
+EXPO_PUBLIC_FIREBASE_API_KEY = "AIzaSyD9pMTWieHyJ9z7qtg_BAKRZ8pqgNDnQiM"
+EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN = "irgadgetsofficialweb.firebaseapp.com"
+EXPO_PUBLIC_FIREBASE_PROJECT_ID = "irgadgetsofficialweb"
+EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET = "irgadgetsofficialweb.firebasestorage.app"
+EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "855107386441"
+EXPO_PUBLIC_FIREBASE_APP_ID = "1:855107386441:web:d64c2fb26bd3056b3e5398"
