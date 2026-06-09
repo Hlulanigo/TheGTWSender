@@ -38,13 +38,21 @@ export default function ChatScreen() {
     );
   }
 
-  function handleSend() {
-    if (!text.trim()) return;
+  function handleSend(overrideText?: string) {
+    const finalMsg = overrideText ?? text;
+    if (!finalMsg.trim()) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    sendMessage(conv!.id, text.trim());
-    setText("");
+    sendMessage(conv!.id, finalMsg.trim());
+    if (!overrideText) setText("");
     setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 100);
   }
+
+  const QUICK_REPLIES = [
+    "Where are you?",
+    "I'm at the pickup point",
+    "On my way!",
+    "Everything looks good",
+  ];
 
   return (
     <KeyboardAvoidingView
@@ -148,6 +156,23 @@ export default function ChatScreen() {
 
       {/* Input */}
       <View style={[styles.inputBar, { paddingBottom: bottomPad + 12 }]}>
+        {!text.trim() && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.quickRepliesScroll}
+          >
+            {QUICK_REPLIES.map((reply) => (
+              <TouchableOpacity
+                key={reply}
+                onPress={() => handleSend(reply)}
+                style={styles.quickReplyBtn}
+              >
+                <Text style={styles.quickReplyText}>{reply}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
         <View style={styles.inputWrap}>
           <TextInput
             style={styles.input}
@@ -244,6 +269,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#0F0A04",
     borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)",
   },
+  quickRepliesScroll: { gap: 8, paddingBottom: 12, paddingRight: 16 },
+  quickReplyBtn: {
+    backgroundColor: "rgba(255,255,255,0.06)",
+    borderRadius: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
+  quickReplyText: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_500Medium" },
   inputWrap: {
     flexDirection: "row", alignItems: "flex-end",
     backgroundColor: "#1C1208", borderRadius: 24,

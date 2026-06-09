@@ -41,10 +41,18 @@ export default function TravelScreen() {
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [accepting, setAccepting] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const myTrips = trips.filter((t) => t.isOwn);
-  const pendingParcels = parcels.filter((p) => p.status === "pending");
+  const pendingParcels = parcels.filter((p) => {
+    const isPending = p.status === "pending";
+    const matchesSearch = !searchQuery ||
+      p.fromCity.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.toCity.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return isPending && matchesSearch;
+  });
 
   function handlePost() {
     if (!from || !to || !date || !time || !maxWeight || !pricePerKg) {
@@ -260,7 +268,37 @@ export default function TravelScreen() {
             {myTrips.length > 0 ? (
               <View style={styles.tripsSection}>
                 <Text style={styles.sectionTitle}>My Posted Trips</Text>
-                {myTrips.map((t) => <TripCard key={t.id} trip={t} />)}
+                {myTrips.map((t) => {
+                  const matches = getMatchesForTrip(t);
+                  return (
+                    <View key={t.id} style={styles.tripMatchContainer}>
+                      <TripCard trip={t} />
+                      {matches.length > 0 && (
+                        <View style={styles.matchesPreview}>
+                          <LinearGradient colors={["rgba(16,185,129,0.15)", "rgba(16,185,129,0.05)"]} style={styles.matchesGrad}>
+                            <View style={styles.matchesHeader}>
+                              <Feather name="zap" size={14} color="#10B981" />
+                              <Text style={styles.matchesTitle}>{matches.length} Smart Match{matches.length !== 1 ? "es" : ""}</Text>
+                            </View>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.matchesScroll}>
+                              {matches.map((p) => (
+                                <TouchableOpacity
+                                  key={p.id}
+                                  style={styles.matchChip}
+                                  onPress={() => handleAcceptParcel(p.id)}
+                                  activeOpacity={0.8}
+                                >
+                                  <Text style={styles.matchChipText}>{p.title}</Text>
+                                  <Text style={styles.matchChipReward}>${p.reward}</Text>
+                                </TouchableOpacity>
+                              ))}
+                            </ScrollView>
+                          </LinearGradient>
+                        </View>
+                      )}
+                    </View>
+                  );
+                })}
               </View>
             ) : !showForm ? (
               <View style={styles.emptyState}>
@@ -278,6 +316,22 @@ export default function TravelScreen() {
               <Text style={styles.carrySub}>
                 Accept a parcel to carry on your trip and earn the reward
               </Text>
+            </View>
+
+            <View style={styles.searchBar}>
+              <Feather name="search" size={16} color="#64748B" />
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search by city or package name..."
+                placeholderTextColor="#64748B"
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+              />
+              {searchQuery ? (
+                <TouchableOpacity onPress={() => setSearchQuery("")}>
+                  <Feather name="x-circle" size={16} color="#64748B" />
+                </TouchableOpacity>
+              ) : null}
             </View>
 
             {pendingParcels.length === 0 ? (
@@ -420,10 +474,37 @@ const styles = StyleSheet.create({
   carryHeader: { marginBottom: 16 },
   carryTitle: { color: "#FFFFFF", fontSize: 18, fontFamily: "Inter_700Bold", marginBottom: 4 },
   carrySub: { color: "#94A3B8", fontSize: 13, fontFamily: "Inter_400Regular", lineHeight: 19 },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#1C1208",
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.06)",
+    gap: 8,
+  },
+  searchInput: {
+    flex: 1,
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontFamily: "Inter_400Regular",
+  },
   parcelWithAction: {
     backgroundColor: "#1C1208", borderRadius: 18, padding: 14,
     marginBottom: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },
+  tripMatchContainer: { marginBottom: 16 },
+  matchesPreview: { marginTop: -10, marginHorizontal: 10, borderBottomLeftRadius: 16, borderBottomRightRadius: 16, overflow: "hidden", borderWidth: 1, borderTopWidth: 0, borderColor: "rgba(16,185,129,0.2)" },
+  matchesGrad: { padding: 12, paddingTop: 18 },
+  matchesHeader: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 10 },
+  matchesTitle: { color: "#10B981", fontSize: 12, fontFamily: "Inter_600SemiBold", textTransform: "uppercase", letterSpacing: 0.5 },
+  matchesScroll: { flexDirection: "row" },
+  matchChip: { backgroundColor: "rgba(16,185,129,0.1)", borderRadius: 10, paddingVertical: 8, paddingHorizontal: 12, marginRight: 8, borderWidth: 1, borderColor: "rgba(16,185,129,0.2)", flexDirection: "row", alignItems: "center", gap: 8 },
+  matchChipText: { color: "#FFFFFF", fontSize: 13, fontFamily: "Inter_500Medium" },
+  matchChipReward: { color: "#10B981", fontSize: 13, fontFamily: "Inter_700Bold" },
   parcelRow: { marginBottom: 12 },
   parcelInfoBlock: {},
   parcelTopRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 },

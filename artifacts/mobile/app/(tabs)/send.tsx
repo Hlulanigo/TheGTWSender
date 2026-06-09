@@ -43,7 +43,7 @@ const STEP_SUBS = [
 
 export default function SendScreen() {
   const insets = useSafeAreaInsets();
-  const { addParcel, requestDelivery, trips } = useApp();
+  const { addParcel, requestDelivery, trips, getMatchesForParcel } = useApp();
   const topPad = Platform.OS === "web" ? 67 : insets.top;
 
   // Step state
@@ -69,19 +69,12 @@ export default function SendScreen() {
   const [loading, setLoading] = useState(false);
   const [bookingTripId, setBookingTripId] = useState<string | null>(null);
 
-  const matchingTrips = trips.filter(
-    (t) =>
-      t.status === "open" &&
-      !t.isOwn &&
-      (!from || t.fromCity.toLowerCase().includes(from.split(",")[0].toLowerCase())) &&
-      (!to || t.toCity.toLowerCase().includes(to.split(",")[0].toLowerCase()))
-  );
-
-  // Fall back to all open trips if no route match
-  const carriersToShow =
-    matchingTrips.length > 0
-      ? matchingTrips
-      : trips.filter((t) => t.status === "open" && !t.isOwn);
+  const carriersToShow = getMatchesForParcel({
+    fromCity: from.split(",")[0].trim(),
+    toCity: to.split(",")[0].trim(),
+    weight: parseFloat(weight) || undefined,
+    size: size,
+  });
 
   function toggleHandling(key: string) {
     Haptics.selectionAsync();

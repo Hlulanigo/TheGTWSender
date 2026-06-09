@@ -37,18 +37,19 @@ export default function TripDetailScreen() {
     );
   }
 
-  const spotsLeft = trip.maxParcels - trip.acceptedCount;
+  const activeTrip = trip;
+  const spotsLeft = activeTrip.maxParcels - activeTrip.acceptedCount;
   const pendingParcels = parcels.filter((p) => p.status === "pending");
 
   function handleBookParcel(parcelId: string) {
     setBooking(parcelId);
     setTimeout(() => {
-      requestDelivery(parcelId, trip.id);
+      requestDelivery(parcelId, activeTrip.id);
       setBooking(null);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       Alert.alert(
         "Delivery Requested!",
-        `${trip.travelerName} has been notified. They'll confirm your package shortly.`,
+        `${activeTrip.travelerName} has been notified. They'll confirm your package shortly.`,
         [{ text: "Track It", onPress: () => router.push("/(tabs)/track") }]
       );
     }, 1000);
@@ -75,12 +76,12 @@ export default function TripDetailScreen() {
           {/* Traveler info */}
           <View style={styles.travelerSection}>
             <LinearGradient colors={["#3B82F6", "#06B6D4"]} style={styles.avatar}>
-              <Text style={styles.avatarText}>{trip.travelerInitials}</Text>
+              <Text style={styles.avatarText}>{activeTrip.travelerInitials}</Text>
             </LinearGradient>
-            <Text style={styles.travelerName}>{trip.travelerName}</Text>
+            <Text style={styles.travelerName}>{activeTrip.travelerName}</Text>
             <View style={styles.ratingRow}>
               <Feather name="star" size={13} color="#F59E0B" />
-              <Text style={styles.ratingText}>{trip.travelerRating} rating</Text>
+              <Text style={styles.ratingText}>{activeTrip.travelerRating} rating</Text>
               <View style={styles.dot} />
               <View style={styles.verifiedBadge}>
                 <Feather name="check-circle" size={12} color="#10B981" />
@@ -94,8 +95,8 @@ export default function TripDetailScreen() {
             <View style={styles.routeEndpoint}>
               <View style={[styles.routeDot, { backgroundColor: "#3B82F6" }]} />
               <View>
-                <Text style={styles.routeCity}>{trip.fromCity}</Text>
-                <Text style={styles.routeFull}>{trip.from}</Text>
+                <Text style={styles.routeCity}>{activeTrip.fromCity}</Text>
+                <Text style={styles.routeFull}>{activeTrip.from}</Text>
               </View>
             </View>
             <View style={styles.routeMiddle}>
@@ -108,8 +109,8 @@ export default function TripDetailScreen() {
             <View style={styles.routeEndpoint}>
               <View style={[styles.routeDot, { backgroundColor: "#06B6D4" }]} />
               <View>
-                <Text style={styles.routeCity}>{trip.toCity}</Text>
-                <Text style={styles.routeFull}>{trip.to}</Text>
+                <Text style={styles.routeCity}>{activeTrip.toCity}</Text>
+                <Text style={styles.routeFull}>{activeTrip.to}</Text>
               </View>
             </View>
           </View>
@@ -123,28 +124,28 @@ export default function TripDetailScreen() {
                 <Feather name="calendar" size={16} color="#3B82F6" />
               </LinearGradient>
               <Text style={styles.metaLabel}>Date</Text>
-              <Text style={styles.metaValue}>{trip.date}</Text>
+              <Text style={styles.metaValue}>{activeTrip.date}</Text>
             </View>
             <View style={styles.metaItem}>
               <LinearGradient colors={["rgba(249,115,22,0.2)", "rgba(249,115,22,0.05)"]} style={styles.metaIcon}>
                 <Feather name="clock" size={16} color="#F97316" />
               </LinearGradient>
               <Text style={styles.metaLabel}>Departure</Text>
-              <Text style={styles.metaValue}>{trip.departureTime}</Text>
+              <Text style={styles.metaValue}>{activeTrip.departureTime}</Text>
             </View>
             <View style={styles.metaItem}>
               <LinearGradient colors={["rgba(16,185,129,0.2)", "rgba(16,185,129,0.05)"]} style={styles.metaIcon}>
                 <Feather name="package" size={16} color="#10B981" />
               </LinearGradient>
               <Text style={styles.metaLabel}>Capacity</Text>
-              <Text style={styles.metaValue}>{trip.maxWeight}kg</Text>
+              <Text style={styles.metaValue}>{activeTrip.maxWeight}kg</Text>
             </View>
             <View style={styles.metaItem}>
               <LinearGradient colors={["rgba(245,158,11,0.2)", "rgba(245,158,11,0.05)"]} style={styles.metaIcon}>
                 <Feather name="dollar-sign" size={16} color="#F59E0B" />
               </LinearGradient>
               <Text style={styles.metaLabel}>Rate</Text>
-              <Text style={styles.metaValue}>${trip.pricePerKg}/kg</Text>
+              <Text style={styles.metaValue}>${activeTrip.pricePerKg}/kg</Text>
             </View>
           </View>
 
@@ -165,7 +166,7 @@ export default function TripDetailScreen() {
               />
               <Text style={[styles.spotsText, { color: spotsLeft > 0 ? "#10B981" : "#EF4444" }]}>
                 {spotsLeft > 0
-                  ? `${spotsLeft} spot${spotsLeft !== 1 ? "s" : ""} available · ${trip.maxSize} max parcel size`
+                  ? `${spotsLeft} spot${spotsLeft !== 1 ? "s" : ""} available · ${activeTrip.maxSize} max parcel size`
                   : "This trip is fully booked"}
               </Text>
             </LinearGradient>
@@ -176,7 +177,7 @@ export default function TripDetailScreen() {
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Send a Package on This Trip</Text>
               <Text style={styles.sectionSub}>
-                Select one of your pending packages to send with {trip.travelerName.split(" ")[0]}
+                Select one of your pending packages to send with {activeTrip.travelerName.split(" ")[0]}
               </Text>
               {pendingParcels.map((p) => (
                 <View key={p.id} style={styles.parcelWithBtn}>

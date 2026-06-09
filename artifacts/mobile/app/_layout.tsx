@@ -37,32 +37,34 @@ function UserSync() {
 }
 
 function RootLayoutNav() {
-  const { user, loading } = useAuth();
+  const { user, loading, pendingVerification } = useAuth();
   const segments = useSegments();
 
   useEffect(() => {
     if (loading) return;
 
     async function redirect() {
-      const inAuthGroup = segments[0] === "auth";
-      const inOnboarding = segments[0] === "onboarding";
+      const inAuthGroup = (segments[0] as string | undefined) === "auth";
+      const inOnboarding = (segments[0] as string | undefined) === "onboarding";
 
       if (!user) {
-        // Not logged in — check if they've seen onboarding
         const onboarded = await AsyncStorage.getItem("pg_onboarded");
         if (!onboarded) {
           router.replace("/onboarding");
         } else if (!inAuthGroup) {
           router.replace("/auth/login");
         }
+      } else if (pendingVerification) {
+        if (!inAuthGroup || segments[1] !== "verify-email") {
+          router.replace("/auth/verify-email");
+        }
       } else if (inAuthGroup || inOnboarding) {
-        // Logged in but on auth/onboarding screen — go to tabs
         router.replace("/(tabs)");
       }
     }
 
     redirect();
-  }, [user, loading, segments]);
+  }, [user, loading, pendingVerification, segments]);
 
   return (
     <Stack screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
@@ -70,6 +72,7 @@ function RootLayoutNav() {
       <Stack.Screen name="onboarding" options={{ headerShown: false, animation: "fade" }} />
       <Stack.Screen name="auth/login" options={{ headerShown: false, animation: "fade" }} />
       <Stack.Screen name="auth/register" options={{ headerShown: false, animation: "fade" }} />
+      <Stack.Screen name="auth/verify-email" options={{ headerShown: false, animation: "fade" }} />
       <Stack.Screen name="parcel/[id]" options={{ headerShown: false, presentation: "card" }} />
       <Stack.Screen name="trip/[id]" options={{ headerShown: false, presentation: "card" }} />
       <Stack.Screen name="carrier/[id]" options={{ headerShown: false, presentation: "card" }} />

@@ -73,7 +73,7 @@ export default function HomeScreen() {
         {/* Brand logo row */}
         <View style={styles.brandRow}>
           <Image
-            source={require("@/assets/logo.png")}
+            source={require("@/assets/images/icon.png")}
             style={styles.brandLogo}
             resizeMode="contain"
             tintColor="#F97316"

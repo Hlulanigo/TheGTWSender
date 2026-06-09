@@ -56,7 +56,7 @@ const pb = StyleSheet.create({
 
 export default function TrackScreen() {
   const insets = useSafeAreaInsets();
-  const { parcels, trips } = useApp();
+  const { parcels, trips, getMatchesForParcel, requestDelivery } = useApp();
   const [activeTab, setActiveTab] = useState<ParcelStatus | "all">("all");
   const topPad = Platform.OS === "web" ? 67 : insets.top;
 
@@ -168,88 +168,123 @@ export default function TrackScreen() {
             const carrier = p.matchedTripId
               ? trips.find((t) => t.id === p.matchedTripId)
               : null;
+            const matches = p.status === "pending" ? getMatchesForParcel(p) : [];
             const completedSteps = p.trackingSteps.filter((s) => s.completed).length;
             const progressPct = Math.round((completedSteps / p.trackingSteps.length) * 100);
 
             return (
-              <TouchableOpacity
-                key={p.id}
-                onPress={() => {
-                  Haptics.selectionAsync();
-                  router.push({ pathname: "/parcel/[id]", params: { id: p.id } });
-                }}
-                activeOpacity={0.88}
-                style={styles.parcelCard}
-              >
-                {/* Accent line */}
-                <LinearGradient colors={cfg.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.accentLine} />
+              <View key={p.id}>
+                <TouchableOpacity
+                  onPress={() => {
+                    Haptics.selectionAsync();
+                    router.push({ pathname: "/parcel/[id]", params: { id: p.id } });
+                  }}
+                  activeOpacity={0.88}
+                  style={styles.parcelCard}
+                >
+                  {/* Accent line */}
+                  <LinearGradient colors={cfg.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.accentLine} />
 
-                <View style={styles.cardBody}>
-                  <View style={styles.cardTop}>
-                    <LinearGradient colors={cfg.colors} style={styles.parcelIcon}>
-                      <Feather name={cfg.icon as any} size={18} color="#fff" />
-                    </LinearGradient>
-                    <View style={styles.cardInfo}>
-                      <Text style={styles.parcelTitle}>{p.title}</Text>
-                      <View style={styles.routeRow}>
-                        <Text style={styles.routeCity}>{p.fromCity}</Text>
-                        <Feather name="arrow-right" size={11} color="#EA580C" />
-                        <Text style={styles.routeCity}>{p.toCity}</Text>
-                      </View>
-                    </View>
-                    <View style={styles.statusBadge}>
-                      <LinearGradient colors={cfg.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.badgeGrad}>
-                        <Text style={styles.badgeText}>{cfg.label}</Text>
+                  <View style={styles.cardBody}>
+                    <View style={styles.cardTop}>
+                      <LinearGradient colors={cfg.colors} style={styles.parcelIcon}>
+                        <Feather name={cfg.icon as any} size={18} color="#fff" />
                       </LinearGradient>
-                    </View>
-                  </View>
-
-                  {/* Progress bar */}
-                  <ProgressBar status={p.status} />
-
-                  <View style={styles.cardBottom}>
-                    <View style={styles.metaRow}>
-                      <View style={styles.metaItem}>
-                        <Feather name="package" size={11} color="#64748B" />
-                        <Text style={styles.metaText}>{p.weight}kg · {p.size}</Text>
-                      </View>
-                      <View style={styles.metaItem}>
-                        <Feather name="dollar-sign" size={11} color="#64748B" />
-                        <Text style={styles.metaText}>${p.reward}</Text>
-                      </View>
-                      {carrier && (
-                        <View style={styles.metaItem}>
-                          <Feather name="user" size={11} color="#64748B" />
-                          <Text style={styles.metaText}>{carrier.travelerName.split(" ")[0]}</Text>
+                      <View style={styles.cardInfo}>
+                        <Text style={styles.parcelTitle}>{p.title}</Text>
+                        <View style={styles.routeRow}>
+                          <Text style={styles.routeCity}>{p.fromCity}</Text>
+                          <Feather name="arrow-right" size={11} color="#EA580C" />
+                          <Text style={styles.routeCity}>{p.toCity}</Text>
                         </View>
-                      )}
-                    </View>
-                    <View style={styles.progressLabel}>
-                      <Text style={styles.progressText}>{progressPct}%</Text>
-                      <Feather name="chevron-right" size={14} color="#64748B" />
-                    </View>
-                  </View>
-
-                  {/* In transit live indicator */}
-                  {p.status === "in_transit" && (
-                    <View style={styles.liveRow}>
-                      <View style={styles.liveChip}>
-                        <View style={styles.liveDot} />
-                        <Text style={styles.liveChipText}>Live · On the way</Text>
                       </View>
-                      {carrier && (
-                        <TouchableOpacity
-                          onPress={() => router.push({ pathname: "/messages/[id]", params: { id: "c1" } })}
-                          style={styles.chatBtn}
-                        >
-                          <Feather name="message-circle" size={14} color="#F97316" />
-                          <Text style={styles.chatBtnText}>Chat</Text>
-                        </TouchableOpacity>
-                      )}
+                      <View style={styles.statusBadge}>
+                        <LinearGradient colors={cfg.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.badgeGrad}>
+                          <Text style={styles.badgeText}>{cfg.label}</Text>
+                        </LinearGradient>
+                      </View>
                     </View>
-                  )}
-                </View>
-              </TouchableOpacity>
+
+                    {/* Progress bar */}
+                    <ProgressBar status={p.status} />
+
+                    <View style={styles.cardBottom}>
+                      <View style={styles.metaRow}>
+                        <View style={styles.metaItem}>
+                          <Feather name="package" size={11} color="#64748B" />
+                          <Text style={styles.metaText}>{p.weight}kg · {p.size}</Text>
+                        </View>
+                        <View style={styles.metaItem}>
+                          <Feather name="dollar-sign" size={11} color="#64748B" />
+                          <Text style={styles.metaText}>${p.reward}</Text>
+                        </View>
+                        {carrier && (
+                          <View style={styles.metaItem}>
+                            <Feather name="user" size={11} color="#64748B" />
+                            <Text style={styles.metaText}>{carrier.travelerName.split(" ")[0]}</Text>
+                          </View>
+                        )}
+                      </View>
+                      <View style={styles.progressLabel}>
+                        <Text style={styles.progressText}>{progressPct}%</Text>
+                        <Feather name="chevron-right" size={14} color="#64748B" />
+                      </View>
+                    </View>
+
+                    {/* In transit live indicator */}
+                    {p.status === "in_transit" && (
+                      <View style={styles.liveRow}>
+                        <View style={styles.liveChip}>
+                          <View style={styles.liveDot} />
+                          <Text style={styles.liveChipText}>Live · On the way</Text>
+                        </View>
+                        {carrier && (
+                          <TouchableOpacity
+                            onPress={() => router.push({ pathname: "/messages/[id]", params: { id: "c1" } })}
+                            style={styles.chatBtn}
+                          >
+                            <Feather name="message-circle" size={14} color="#F97316" />
+                            <Text style={styles.chatBtnText}>Chat</Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    )}
+                  </View>
+                </TouchableOpacity>
+
+                {/* Show matches for pending parcels */}
+                {matches.length > 0 && (
+                  <View style={styles.matchesPreview}>
+                    <LinearGradient colors={["rgba(249,115,22,0.12)", "rgba(249,115,22,0.05)"]} style={styles.matchesGrad}>
+                      <View style={styles.matchesHeader}>
+                        <Feather name="zap" size={14} color="#F97316" />
+                        <Text style={styles.matchesTitle}>{matches.length} Available Carrier{matches.length !== 1 ? "s" : ""}</Text>
+                      </View>
+                      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.matchesScroll}>
+                        {matches.map((t) => (
+                          <TouchableOpacity
+                            key={t.id}
+                            style={styles.matchChip}
+                            onPress={() => {
+                              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                              requestDelivery(p.id, t.id);
+                            }}
+                            activeOpacity={0.8}
+                          >
+                            <View style={styles.matchAvatar}>
+                              <Text style={styles.matchAvatarText}>{t.travelerInitials}</Text>
+                            </View>
+                            <View>
+                              <Text style={styles.matchName}>{t.travelerName.split(" ")[0]}</Text>
+                              <Text style={styles.matchRating}>{t.travelerRating} ★</Text>
+                            </View>
+                          </TouchableOpacity>
+                        ))}
+                      </ScrollView>
+                    </LinearGradient>
+                  </View>
+                )}
+              </View>
             );
           })
         )}
@@ -295,6 +330,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#1C1208", borderRadius: 20, overflow: "hidden",
     marginBottom: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },
+  matchesPreview: { marginTop: -20, marginBottom: 16, marginHorizontal: 12, borderBottomLeftRadius: 16, borderBottomRightRadius: 16, overflow: "hidden", borderWidth: 1, borderTopWidth: 0, borderColor: "rgba(249,115,22,0.2)" },
+  matchesGrad: { padding: 12, paddingTop: 20 },
+  matchesHeader: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 10 },
+  matchesTitle: { color: "#F97316", fontSize: 11, fontFamily: "Inter_600SemiBold", textTransform: "uppercase", letterSpacing: 0.5 },
+  matchesScroll: { flexDirection: "row" },
+  matchChip: { backgroundColor: "rgba(249,115,22,0.08)", borderRadius: 12, paddingVertical: 8, paddingHorizontal: 10, marginRight: 8, borderWidth: 1, borderColor: "rgba(249,115,22,0.15)", flexDirection: "row", alignItems: "center", gap: 8 },
+  matchAvatar: { width: 28, height: 28, borderRadius: 14, backgroundColor: "#F97316", alignItems: "center", justifyContent: "center" },
+  matchAvatarText: { color: "#fff", fontSize: 11, fontFamily: "Inter_700Bold" },
+  matchName: { color: "#FFFFFF", fontSize: 12, fontFamily: "Inter_600SemiBold" },
+  matchRating: { color: "#F59E0B", fontSize: 10, fontFamily: "Inter_500Medium" },
   accentLine: { height: 3 },
   cardBody: { padding: 14 },
   cardTop: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 12 },

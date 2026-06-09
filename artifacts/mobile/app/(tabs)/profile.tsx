@@ -27,23 +27,23 @@ const MENU_SECTIONS = [
   {
     title: "Account",
     items: [
-      { icon: "credit-card", label: "Payment Methods", sub: "Add or edit cards & wallets" },
-      { icon: "map-pin", label: "Saved Addresses", sub: "Quick pickup & dropoff" },
-      { icon: "bell", label: "Notifications", sub: "Delivery and status alerts" },
+      { icon: "credit-card", label: "Payment Methods", sub: "Add or edit cards & wallets", route: "/payment-methods" },
+      { icon: "map-pin", label: "Saved Addresses", sub: "Quick pickup & dropoff", route: "/saved-addresses" },
+      { icon: "bell", label: "Notifications", sub: "Delivery and status alerts", route: "/notifications" },
     ],
   },
   {
     title: "Trust & Safety",
     items: [
       { icon: "shield", label: "ID Verified", sub: "Account verified", info: "Verified" },
-      { icon: "star", label: "My Reviews", sub: "See what carriers say about you" },
+      { icon: "star", label: "My Reviews", sub: "See what carriers say about you", route: "/reviews" },
     ],
   },
   {
     title: "Support",
     items: [
-      { icon: "help-circle", label: "Help & FAQ", sub: "Common questions and guides" },
-      { icon: "settings", label: "Settings", sub: "Privacy, security, and more" },
+      { icon: "help-circle", label: "Help & FAQ", sub: "Common questions and guides", route: "/help" },
+      { icon: "settings", label: "Settings", sub: "Privacy, security, and more", route: "/settings" },
     ],
   },
 ];
@@ -56,7 +56,7 @@ export default function ProfileScreen() {
 
   const displayName = authUser?.name ?? "GTW User";
   const displayEmail = authUser?.email ?? "";
-  const initials = displayName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+  const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2);
 
   const totalSent = parcels.length;
   const delivered = parcels.filter((p) => p.status === "delivered").length;

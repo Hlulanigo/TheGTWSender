@@ -124,6 +124,8 @@ const CARRIER_REVIEWS: Record<string, CarrierReview[]> = {
   ],
 };
 
+const SIZE_ORDER: Record<ParcelSize, number> = { small: 1, medium: 2, large: 3 };
+
 const INITIAL_TRIPS: Trip[] = [
   { id: "t1", travelerId: "u2", travelerName: "Alex Martinez", travelerInitials: "AM", travelerRating: 4.9, from: "New York, NY", fromCity: "New York", to: "Los Angeles, CA", toCity: "Los Angeles", date: "Tomorrow", departureTime: "8:30 AM", maxWeight: 5, maxSize: "medium", pricePerKg: 12, status: "open", acceptedCount: 1, maxParcels: 3 },
   { id: "t2", travelerId: "u3", travelerName: "Sarah Kim", travelerInitials: "SK", travelerRating: 4.8, from: "Chicago, IL", fromCity: "Chicago", to: "Houston, TX", toCity: "Houston", date: "Today", departureTime: "6:00 PM", maxWeight: 8, maxSize: "large", pricePerKg: 9, status: "open", acceptedCount: 0, maxParcels: 4 },
@@ -194,6 +196,8 @@ interface AppContextType {
   unreadNotifications: number;
   ratedDeliveries: string[];
   getCarrierReviews: (travelerId: string) => CarrierReview[];
+  getMatchesForParcel: (parcel: Partial<Parcel>) => Trip[];
+  getMatchesForTrip: (trip: Trip) => Parcel[];
   addParcel: (parcel: Omit<Parcel, "id" | "createdAt" | "trackingSteps" | "status">) => void;
   addTrip: (trip: Omit<Trip, "id" | "travelerId" | "travelerName" | "travelerInitials" | "travelerRating" | "status" | "acceptedCount" | "isOwn">) => void;
   requestDelivery: (parcelId: string, tripId: string) => void;
@@ -244,6 +248,45 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   function getCarrierReviews(travelerId: string): CarrierReview[] {
     return CARRIER_REVIEWS[travelerId] ?? [];
+  }
+
+  function getMatchesForParcel(parcel: Partial<Parcel>): Trip[] {
+    return trips.filter((trip) => {
+      // 1. Status and capacity
+      if (trip.status !== "open" || trip.acceptedCount >= trip.maxParcels || trip.isOwn) return false;
+
+      // 2. Route match
+      const fromMatch = !parcel.fromCity || trip.fromCity.toLowerCase().includes(parcel.fromCity.toLowerCase());
+      const toMatch = !parcel.toCity || trip.toCity.toLowerCase().includes(parcel.toCity.toLowerCase());
+      if (!fromMatch || !toMatch) return false;
+
+      // 3. Weight constraint
+      if (parcel.weight && parcel.weight > trip.maxWeight) return false;
+
+      // 4. Size constraint
+      if (parcel.size && SIZE_ORDER[parcel.size] > SIZE_ORDER[trip.maxSize]) return false;
+
+      return true;
+    });
+  }
+
+  function getMatchesForTrip(trip: Trip): Parcel[] {
+    return parcels.filter((parcel) => {
+      if (parcel.status !== "pending") return false;
+
+      // 1. Route match
+      const fromMatch = trip.fromCity.toLowerCase().includes(parcel.fromCity.toLowerCase());
+      const toMatch = trip.toCity.toLowerCase().includes(parcel.toCity.toLowerCase());
+      if (!fromMatch || !toMatch) return false;
+
+      // 2. Weight constraint
+      if (parcel.weight > trip.maxWeight) return false;
+
+      // 3. Size constraint
+      if (SIZE_ORDER[parcel.size] > SIZE_ORDER[trip.maxSize]) return false;
+
+      return true;
+    });
   }
 
   function addParcel(data: Omit<Parcel, "id" | "createdAt" | "trackingSteps" | "status">) {
@@ -309,7 +352,27 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AppContext.Provider value={{ trips, parcels, user, notifications, conversations, unreadNotifications, ratedDeliveries, getCarrierReviews, addParcel, addTrip, requestDelivery, acceptParcel, markAllNotificationsRead, markNotificationRead, sendMessage, addRating, updateUser }}>
+    <AppContext.Provider value={{
+      trips,
+      parcels,
+      user,
+      notifications,
+      conversations,
+      unreadNotifications,
+      ratedDeliveries,
+      getCarrierReviews,
+      getMatchesForParcel,
+      getMatchesForTrip,
+      addParcel,
+      addTrip,
+      requestDelivery,
+      acceptParcel,
+      markAllNotificationsRead,
+      markNotificationRead,
+      sendMessage,
+      addRating,
+      updateUser,
+    }}>
       {children}
     </AppContext.Provider>
   );
