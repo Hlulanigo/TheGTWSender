@@ -202,6 +202,7 @@ interface AppContextType {
   markNotificationRead: (id: string) => void;
   sendMessage: (conversationId: string, text: string) => void;
   addRating: (parcelId: string, rating: number, comment: string) => void;
+  updateUser: (patch: Partial<Pick<UserProfile, "name" | "email">>) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -209,7 +210,7 @@ const AppContext = createContext<AppContextType | null>(null);
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [trips, setTrips] = useState<Trip[]>(INITIAL_TRIPS);
   const [parcels, setParcels] = useState<Parcel[]>(INITIAL_PARCELS);
-  const [user] = useState<UserProfile>(INITIAL_USER);
+  const [user, setUser] = useState<UserProfile>(INITIAL_USER);
   const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
   const [conversations, setConversations] = useState<Conversation[]>(INITIAL_CONVERSATIONS);
   const [ratedDeliveries, setRatedDeliveries] = useState<string[]>([]);
@@ -260,9 +261,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   function addTrip(data: Omit<Trip, "id" | "travelerId" | "travelerName" | "travelerInitials" | "travelerRating" | "status" | "acceptedCount" | "isOwn">) {
-    const initials = user.name.split(" ").map((n) => n[0]).join("");
+    const initials = user.name.split(" ").filter(Boolean).map((n) => n[0]).join("").toUpperCase().slice(0, 2) || "ME";
     const newTrip: Trip = { ...data, id: Date.now().toString() + Math.random().toString(36).substr(2, 9), travelerId: "u1", travelerName: user.name, travelerInitials: initials, travelerRating: user.rating, status: "open", acceptedCount: 0, isOwn: true };
     saveTrips([newTrip, ...trips]);
+  }
+
+  function updateUser(patch: Partial<Pick<UserProfile, "name" | "email">>) {
+    setUser((prev) => ({ ...prev, ...patch }));
   }
 
   function _matchParcel(parcelId: string, tripId: string) {
@@ -304,7 +309,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AppContext.Provider value={{ trips, parcels, user, notifications, conversations, unreadNotifications, ratedDeliveries, getCarrierReviews, addParcel, addTrip, requestDelivery, acceptParcel, markAllNotificationsRead, markNotificationRead, sendMessage, addRating }}>
+    <AppContext.Provider value={{ trips, parcels, user, notifications, conversations, unreadNotifications, ratedDeliveries, getCarrierReviews, addParcel, addTrip, requestDelivery, acceptParcel, markAllNotificationsRead, markNotificationRead, sendMessage, addRating, updateUser }}>
       {children}
     </AppContext.Provider>
   );

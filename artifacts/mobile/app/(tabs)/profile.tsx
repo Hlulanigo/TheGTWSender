@@ -140,7 +140,7 @@ export default function ProfileScreen() {
         </View>
       </View>
 
-      {/* Send package CTA */}
+      {/* Dual CTAs */}
       <View style={styles.ctaSection}>
         <TouchableOpacity
           onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); router.push("/(tabs)/send"); }}
@@ -151,6 +151,17 @@ export default function ProfileScreen() {
             <Feather name="package" size={18} color="#fff" />
             <Text style={styles.ctaText}>Send a Package</Text>
             <Feather name="arrow-right" size={16} color="rgba(255,255,255,0.7)" />
+          </LinearGradient>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); router.push("/(tabs)/travel"); }}
+          style={styles.ctaBtn}
+          activeOpacity={0.88}
+        >
+          <LinearGradient colors={["#1C2D40", "#0F1A2A"]} style={[styles.ctaGrad, { borderWidth: 1, borderColor: "rgba(59,130,246,0.3)" }]}>
+            <Feather name="navigation" size={18} color="#3B82F6" />
+            <Text style={[styles.ctaText, { color: "#3B82F6" }]}>Earn by Traveling</Text>
+            <Feather name="arrow-right" size={16} color="rgba(59,130,246,0.7)" />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -256,7 +267,7 @@ const styles = StyleSheet.create({
   },
   statValue: { color: "#FFFFFF", fontSize: 18, fontFamily: "Inter_700Bold" },
   statLabel: { color: "#94A3B8", fontSize: 10, fontFamily: "Inter_400Regular", marginTop: 3, textAlign: "center" },
-  ctaSection: { paddingHorizontal: 20, paddingTop: 16 },
+  ctaSection: { paddingHorizontal: 20, paddingTop: 16, gap: 10 },
   ctaBtn: { borderRadius: 18, overflow: "hidden" },
   ctaGrad: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 16, paddingHorizontal: 20 },
   ctaText: { color: "#fff", fontSize: 16, fontFamily: "Inter_600SemiBold", flex: 1, marginLeft: 12 },

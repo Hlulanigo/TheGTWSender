@@ -23,6 +23,10 @@ function NativeTabLayout() {
         <Icon sf={{ default: "mappin.circle", selected: "mappin.circle.fill" }} />
         <Label>Track</Label>
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="travel">
+        <Icon sf={{ default: "airplane", selected: "airplane" }} />
+        <Label>Earn</Label>
+      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="messages">
         <Icon sf={{ default: "message", selected: "message.fill" }} />
         <Label>Messages</Label>
@@ -122,8 +126,18 @@ function ClassicTabLayout() {
             ),
         }}
       />
-      {/* Hidden routes – keep file but remove from tab bar */}
-      <Tabs.Screen name="travel" options={{ href: null }} />
+      <Tabs.Screen
+        name="travel"
+        options={{
+          title: "Earn",
+          tabBarIcon: ({ color }) =>
+            isIOS ? (
+              <SymbolView name="airplane" tintColor={color} size={24} />
+            ) : (
+              <Feather name="navigation" size={22} color={color} />
+            ),
+        }}
+      />
     </Tabs>
   );
 }

@@ -15,12 +15,26 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { AppProvider } from "@/context/AppContext";
+import { AppProvider, useApp } from "@/context/AppContext";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
+
+function UserSync() {
+  const { user: authUser } = useAuth();
+  const { updateUser } = useApp();
+  useEffect(() => {
+    if (authUser?.name || authUser?.email) {
+      updateUser({
+        ...(authUser.name ? { name: authUser.name } : {}),
+        ...(authUser.email ? { email: authUser.email } : {}),
+      });
+    }
+  }, [authUser?.name, authUser?.email]);
+  return null;
+}
 
 function RootLayoutNav() {
   const { user, loading } = useAuth();
@@ -92,6 +106,7 @@ export default function RootLayout() {
             <QueryClientProvider client={queryClient}>
               <GestureHandlerRootView style={{ flex: 1 }}>
                 <KeyboardProvider>
+                  <UserSync />
                   <RootLayoutNav />
                 </KeyboardProvider>
               </GestureHandlerRootView>

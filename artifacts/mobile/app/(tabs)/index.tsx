@@ -281,6 +281,38 @@ export default function HomeScreen() {
         </View>
       )}
 
+      {/* Earn by traveling CTA */}
+      {!search && (
+        <View style={styles.section}>
+          <TouchableOpacity
+            activeOpacity={0.88}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              router.push("/(tabs)/travel");
+            }}
+          >
+            <LinearGradient
+              colors={["#1C2D40", "#0F1A2A"]}
+              style={styles.earnCard}
+            >
+              <LinearGradient
+                colors={["#3B82F6", "#06B6D4"]}
+                style={styles.earnIconCircle}
+              >
+                <Feather name="navigation" size={22} color="#fff" />
+              </LinearGradient>
+              <View style={styles.earnCardText}>
+                <Text style={styles.earnCardTitle}>Traveling somewhere?</Text>
+                <Text style={styles.earnCardSub}>Carry packages along your route and earn</Text>
+              </View>
+              <LinearGradient colors={["#3B82F6", "#06B6D4"]} style={styles.earnArrow}>
+                <Feather name="arrow-right" size={14} color="#fff" />
+              </LinearGradient>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* Carriers feed */}
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
@@ -411,5 +443,21 @@ const styles = StyleSheet.create({
   emptyCarriersText: {
     color: "#94A3B8", fontSize: 14, fontFamily: "Inter_400Regular",
     textAlign: "center",
+  },
+  earnCard: {
+    flexDirection: "row", alignItems: "center", gap: 14,
+    borderRadius: 18, padding: 16,
+    borderWidth: 1, borderColor: "rgba(59,130,246,0.2)",
+  },
+  earnIconCircle: {
+    width: 46, height: 46, borderRadius: 14,
+    alignItems: "center", justifyContent: "center",
+  },
+  earnCardText: { flex: 1 },
+  earnCardTitle: { color: "#FFFFFF", fontSize: 15, fontFamily: "Inter_600SemiBold" },
+  earnCardSub: { color: "#94A3B8", fontSize: 12, fontFamily: "Inter_400Regular", marginTop: 2 },
+  earnArrow: {
+    width: 30, height: 30, borderRadius: 10,
+    alignItems: "center", justifyContent: "center",
   },
 });
