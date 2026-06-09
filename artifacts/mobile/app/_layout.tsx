@@ -63,6 +63,7 @@ function RootLayoutNav() {
       <Stack.Screen name="notifications" options={{ headerShown: false, presentation: "card" }} />
       <Stack.Screen name="messages/index" options={{ headerShown: false, presentation: "card" }} />
       <Stack.Screen name="messages/[id]" options={{ headerShown: false, presentation: "card" }} />
+      <Stack.Screen name="profile/edit" options={{ headerShown: false, presentation: "modal" }} />
     </Stack>
   );
 }

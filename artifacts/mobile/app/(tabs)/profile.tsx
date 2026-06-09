@@ -109,6 +109,14 @@ export default function ProfileScreen() {
           <Feather name="star" size={13} color="#F59E0B" />
           <Text style={styles.ratingText}>GTW Member</Text>
         </View>
+        <TouchableOpacity
+          style={styles.editProfileBtn}
+          onPress={() => { Haptics.selectionAsync(); router.push("/profile/edit"); }}
+          activeOpacity={0.8}
+        >
+          <Feather name="edit-2" size={13} color="#F97316" />
+          <Text style={styles.editProfileText}>Edit Profile</Text>
+        </TouchableOpacity>
       </LinearGradient>
 
       {/* Stats */}
@@ -231,6 +239,13 @@ const styles = StyleSheet.create({
   profileEmail: { color: "#94A3B8", fontSize: 14, fontFamily: "Inter_400Regular", marginBottom: 10 },
   ratingRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   ratingText: { color: "#F59E0B", fontSize: 13, fontFamily: "Inter_600SemiBold" },
+  editProfileBtn: {
+    flexDirection: "row", alignItems: "center", gap: 6,
+    marginTop: 12, paddingVertical: 8, paddingHorizontal: 16,
+    backgroundColor: "rgba(249,115,22,0.12)", borderRadius: 20,
+    borderWidth: 1, borderColor: "rgba(249,115,22,0.25)",
+  },
+  editProfileText: { color: "#F97316", fontSize: 13, fontFamily: "Inter_600SemiBold" },
   dot: { width: 3, height: 3, borderRadius: 1.5, backgroundColor: "#64748B" },
   memberText: { color: "#64748B", fontSize: 13, fontFamily: "Inter_400Regular" },
   statsSection: { padding: 20, paddingBottom: 0 },

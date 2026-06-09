@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { useApp } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import TripCard from "@/components/TripCard";
 import ParcelCard from "@/components/ParcelCard";
 
@@ -33,8 +34,10 @@ function getGreeting() {
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
-  const { trips, parcels, user, unreadNotifications, conversations } = useApp();
+  const { trips, parcels, unreadNotifications, conversations } = useApp();
+  const { user: authUser } = useAuth();
   const [search, setSearch] = useState("");
+  const firstName = (authUser?.name ?? "there").split(" ")[0];
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
 
@@ -80,7 +83,7 @@ export default function HomeScreen() {
         <View style={styles.heroTop}>
           <View>
             <Text style={styles.heroGreeting}>{getGreeting()}</Text>
-            <Text style={styles.heroName}>{user.name.split(" ")[0]}</Text>
+            <Text style={styles.heroName}>{firstName}</Text>
           </View>
           <View style={styles.headerIcons}>
             <TouchableOpacity
