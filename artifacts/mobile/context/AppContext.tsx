@@ -1,6 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { useAuth } from "@/context/AuthContext";
+import {
+  createParcel,
+  getNotifications,
+  getParcelMessages,
+  getUnreadNotificationsCount,
+  getWalletBalance,
+  listParcels,
+  markAllNotificationsRead as markAllBackendNotificationsRead,
+  markNotificationRead as markBackendNotificationRead,
+  postParcelMessage,
+} from "@/lib/api";
+
 export type ParcelSize = "small" | "medium" | "large";
 export type TripStatus = "open" | "full" | "completed";
 export type ParcelStatus = "pending" | "matched" | "in_transit" | "delivered";
@@ -59,6 +72,8 @@ export interface UserProfile {
   tripsPosted: number;
   earnings: number;
   memberSince: string;
+  walletBalance?: number;
+  subscriptionStatus?: string;
 }
 
 export interface AppNotification {
@@ -125,6 +140,87 @@ const CARRIER_REVIEWS: Record<string, CarrierReview[]> = {
 };
 
 const SIZE_ORDER: Record<ParcelSize, number> = { small: 1, medium: 2, large: 3 };
+
+function normalizeParcelStatus(status?: string): ParcelStatus {
+  const value = (status ?? "Pending").toLowerCase();
+  if (value.includes("deliv")) return "delivered";
+  if (value.includes("transit") || value.includes("picked") || value.includes("arrived")) return "in_transit";
+  if (value.includes("accept") || value.includes("paid")) return "matched";
+  return "pending";
+}
+
+function mapParcelSize(size?: string): ParcelSize {
+  const value = (size ?? "medium").toLowerCase();
+  if (value === "small") return "small";
+  if (value === "large") return "large";
+  return "medium";
+}
+
+function buildTrackingSteps(status: ParcelStatus): TrackingStep[] {
+  if (status === "delivered") {
+    return [
+      { id: "ts1", title: "Request Posted", description: "Parcel request created", timestamp: "Done", completed: true },
+      { id: "ts2", title: "Accepted", description: "Carrier accepted the parcel", timestamp: "Done", completed: true },
+      { id: "ts3", title: "In Transit", description: "Parcel is on the way", timestamp: "Done", completed: true },
+      { id: "ts4", title: "Delivered", description: "Parcel delivered", timestamp: "Done", completed: true },
+    ];
+  }
+  if (status === "in_transit") {
+    return [
+      { id: "ts1", title: "Request Posted", description: "Parcel request created", timestamp: "Done", completed: true },
+      { id: "ts2", title: "Accepted", description: "Carrier accepted the parcel", timestamp: "Done", completed: true },
+      { id: "ts3", title: "In Transit", description: "Parcel is on the way", timestamp: "Now", completed: true },
+      { id: "ts4", title: "Delivered", description: "Parcel delivered", timestamp: "Pending", completed: false },
+    ];
+  }
+  if (status === "matched") {
+    return [
+      { id: "ts1", title: "Request Posted", description: "Parcel request created", timestamp: "Done", completed: true },
+      { id: "ts2", title: "Accepted", description: "Carrier accepted the parcel", timestamp: "Done", completed: true },
+      { id: "ts3", title: "In Transit", description: "Parcel is on the way", timestamp: "Pending", completed: false },
+      { id: "ts4", title: "Delivered", description: "Parcel delivered", timestamp: "Pending", completed: false },
+    ];
+  }
+  return [
+    { id: "ts1", title: "Request Posted", description: "Parcel request created", timestamp: "Done", completed: true },
+    { id: "ts2", title: "Accepted", description: "Waiting for carrier acceptance", timestamp: "Pending", completed: false },
+    { id: "ts3", title: "In Transit", description: "Parcel is on the way", timestamp: "Pending", completed: false },
+    { id: "ts4", title: "Delivered", description: "Parcel delivered", timestamp: "Pending", completed: false },
+  ];
+}
+
+function normalizeParcel(data: any): Parcel {
+  const status = normalizeParcelStatus(data?.status);
+  const reward = typeof data?.compensation === "number" ? data.compensation : typeof data?.reward === "number" ? data.reward : 0;
+  return {
+    id: data?.id ?? data?._id ?? `parcel-${Date.now()}`,
+    title: data?.title ?? `Parcel ${String(data?.id ?? "").slice(0, 6)}`,
+    from: data?.origin ?? data?.from ?? "",
+    fromCity: data?.origin ?? data?.from ?? "",
+    to: data?.destination ?? data?.to ?? "",
+    toCity: data?.destination ?? data?.to ?? "",
+    weight: Number(data?.weight ?? 1),
+    size: mapParcelSize(data?.size),
+    description: data?.description ?? "Parcel created via GTW",
+    reward,
+    status,
+    matchedTripId: data?.matchedTripId ?? data?.tripId,
+    trackingSteps: buildTrackingSteps(status),
+    createdAt: data?.createdAt ?? data?.pickupDate ?? new Date().toISOString(),
+  };
+}
+
+function normalizeNotification(data: any): AppNotification {
+  return {
+    id: data?.id ?? data?._id ?? `${Date.now()}`,
+    title: data?.title ?? "Notification",
+    body: data?.body ?? "Update available",
+    timestamp: data?.createdAt ?? "Just now",
+    read: Boolean(data?.isRead ?? data?.read),
+    type: (data?.type ?? "system") as AppNotification["type"],
+    relatedId: data?.data?.parcelId ?? data?.data?.conversationId,
+  };
+}
 
 const INITIAL_TRIPS: Trip[] = [
   { id: "t1", travelerId: "u2", travelerName: "Alex Martinez", travelerInitials: "AM", travelerRating: 4.9, from: "New York, NY", fromCity: "New York", to: "Los Angeles, CA", toCity: "Los Angeles", date: "Tomorrow", departureTime: "8:30 AM", maxWeight: 5, maxSize: "medium", pricePerKg: 12, status: "open", acceptedCount: 1, maxParcels: 3 },
@@ -198,13 +294,13 @@ interface AppContextType {
   getCarrierReviews: (travelerId: string) => CarrierReview[];
   getMatchesForParcel: (parcel: Partial<Parcel>) => Trip[];
   getMatchesForTrip: (trip: Trip) => Parcel[];
-  addParcel: (parcel: Omit<Parcel, "id" | "createdAt" | "trackingSteps" | "status">) => void;
+  addParcel: (parcel: Omit<Parcel, "id" | "createdAt" | "trackingSteps" | "status">) => Promise<void>;
   addTrip: (trip: Omit<Trip, "id" | "travelerId" | "travelerName" | "travelerInitials" | "travelerRating" | "status" | "acceptedCount" | "isOwn">) => void;
   requestDelivery: (parcelId: string, tripId: string) => void;
   acceptParcel: (parcelId: string, tripId: string) => void;
-  markAllNotificationsRead: () => void;
-  markNotificationRead: (id: string) => void;
-  sendMessage: (conversationId: string, text: string) => void;
+  markAllNotificationsRead: () => Promise<void>;
+  markNotificationRead: (id: string) => Promise<void>;
+  sendMessage: (conversationId: string, text: string) => Promise<void>;
   addRating: (parcelId: string, rating: number, comment: string) => void;
   updateUser: (patch: Partial<Pick<UserProfile, "name" | "email">>) => void;
 }
@@ -218,10 +314,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
   const [conversations, setConversations] = useState<Conversation[]>(INITIAL_CONVERSATIONS);
   const [ratedDeliveries, setRatedDeliveries] = useState<string[]>([]);
+  const { user: authUser } = useAuth();
 
   const unreadNotifications = notifications.filter((n) => !n.read).length;
 
-  useEffect(() => { loadData(); }, []);
+  useEffect(() => { void loadData(); }, [authUser?.id]);
 
   async function loadData() {
     try {
@@ -237,6 +334,34 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (notifData) setNotifications(JSON.parse(notifData));
       if (convData) setConversations(JSON.parse(convData));
       if (ratedData) setRatedDeliveries(JSON.parse(ratedData));
+    } catch {}
+
+    if (!authUser?.id) return;
+
+    try {
+      const [backendParcels, backendNotifications, unreadCount, walletBalance] = await Promise.all([
+        listParcels(authUser.id),
+        getNotifications(),
+        getUnreadNotificationsCount().catch(() => ({ count: 0 })),
+        getWalletBalance().catch(() => ({ balance: 0, currency: "ZAR" })),
+      ]);
+
+      if (Array.isArray(backendParcels)) {
+        const nextParcels = backendParcels.map(normalizeParcel);
+        setParcels(nextParcels);
+        await AsyncStorage.setItem("pg_parcels", JSON.stringify(nextParcels));
+      }
+
+      if (Array.isArray(backendNotifications)) {
+        const nextNotifications = backendNotifications.map(normalizeNotification);
+        setNotifications(nextNotifications);
+        await AsyncStorage.setItem("pg_notifications", JSON.stringify(nextNotifications));
+      }
+
+      setUser((prev) => ({ ...prev, walletBalance: walletBalance?.balance, subscriptionStatus: prev.subscriptionStatus }));
+      if (typeof unreadCount?.count === "number") {
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: n.read || false })));
+      }
     } catch {}
   }
 
@@ -289,7 +414,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
-  function addParcel(data: Omit<Parcel, "id" | "createdAt" | "trackingSteps" | "status">) {
+  async function addParcel(data: Omit<Parcel, "id" | "createdAt" | "trackingSteps" | "status">) {
     const newParcel: Parcel = {
       ...data,
       id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
@@ -300,7 +425,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         { id: "ts2", title: "Package Accepted", description: "Waiting for traveler match", timestamp: "Pending", completed: false },
       ],
     };
-    saveParcels([newParcel, ...parcels]);
+
+    const nextParcels = [newParcel, ...parcels];
+    saveParcels(nextParcels);
+
+    try {
+      const created = await createParcel({
+        origin: data.from,
+        destination: data.to,
+        size: data.size,
+        compensation: data.reward,
+        pickupDate: new Date().toISOString(),
+        receiverName: user.name,
+        receiverEmail: user.email,
+        description: data.description,
+      });
+      const backendParcel = normalizeParcel(created);
+      const mergedParcels = [backendParcel, ...nextParcels.filter((parcel) => parcel.id !== newParcel.id)];
+      saveParcels(mergedParcels);
+    } catch {}
   }
 
   function addTrip(data: Omit<Trip, "id" | "travelerId" | "travelerName" | "travelerInitials" | "travelerRating" | "status" | "acceptedCount" | "isOwn">) {
@@ -337,12 +480,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  function markAllNotificationsRead() { saveNotifications(notifications.map((n) => ({ ...n, read: true }))); }
-  function markNotificationRead(id: string) { saveNotifications(notifications.map((n) => n.id === id ? { ...n, read: true } : n)); }
+  async function markAllNotificationsRead() {
+    const next = notifications.map((n) => ({ ...n, read: true }));
+    saveNotifications(next);
+    try { await markAllBackendNotificationsRead(); } catch {}
+  }
 
-  function sendMessage(conversationId: string, text: string) {
+  async function markNotificationRead(id: string) {
+    const next = notifications.map((n) => n.id === id ? { ...n, read: true } : n);
+    saveNotifications(next);
+    try { await markBackendNotificationRead(id); } catch {}
+  }
+
+  async function sendMessage(conversationId: string, text: string) {
+    const conversation = conversations.find((c) => c.id === conversationId);
     const newMsg: Message = { id: Date.now().toString(), senderId: "me", text, timestamp: "Just now" };
-    saveConversations(conversations.map((c) => c.id === conversationId ? { ...c, messages: [...c.messages, newMsg], lastMessage: text, lastMessageTime: "Just now" } : c));
+    const nextConversations = conversations.map((c) => c.id === conversationId ? { ...c, messages: [...c.messages, newMsg], lastMessage: text, lastMessageTime: "Just now" } : c);
+    saveConversations(nextConversations);
+
+    if (conversation?.parcelId) {
+      try {
+        const created = await postParcelMessage(conversation.parcelId, { content: text, senderRole: "sender" });
+        const backendMessage: Message = {
+          id: created?.id ?? Date.now().toString(),
+          senderId: created?.senderRole === "sender" ? "me" : "other",
+          text: created?.content ?? text,
+          timestamp: created?.createdAt ?? "Just now",
+        };
+        saveConversations(nextConversations.map((c) => c.id === conversationId ? { ...c, messages: [...c.messages.filter((message) => message.id !== newMsg.id), backendMessage], lastMessage: backendMessage.text, lastMessageTime: backendMessage.timestamp } : c));
+      } catch {}
+    }
   }
 
   function addRating(parcelId: string, rating: number, comment: string) {

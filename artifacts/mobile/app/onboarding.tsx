@@ -120,7 +120,7 @@ export default function OnboardingScreen() {
           >
             {/* Logo */}
             <Image
-              source={require("@/assets/logo.png")}
+              source={require("@/assets/images/icon.png")}
               style={styles.slideLogo}
               resizeMode="contain"
               tintColor="#F97316"

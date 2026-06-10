@@ -78,7 +78,7 @@ export default function ProfileScreen() {
       >
         {/* Brand logo */}
         <View style={styles.brandRow}>
-          <Image source={require("@/assets/logo.png")} style={styles.brandLogo} resizeMode="contain" tintColor="#F97316" />
+          <Image source={require("@/assets/images/icon.png")} style={styles.brandLogo} resizeMode="contain" tintColor="#F97316" />
         </View>
 
         {/* Notifications shortcut */}
@@ -111,7 +111,7 @@ export default function ProfileScreen() {
         </View>
         <TouchableOpacity
           style={styles.editProfileBtn}
-          onPress={() => { Haptics.selectionAsync(); router.push("/profile/edit"); }}
+            onPress={() => { Haptics.selectionAsync(); router.push("/profile/edit" as any); }}
           activeOpacity={0.8}
         >
           <Feather name="edit-2" size={13} color="#F97316" />

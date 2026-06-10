@@ -28,7 +28,7 @@ const SIZES: { key: ParcelSize; label: string }[] = [
 
 export default function TravelScreen() {
   const insets = useSafeAreaInsets();
-  const { trips, parcels, user, addTrip, acceptParcel } = useApp();
+  const { trips, parcels, user, addTrip, acceptParcel, getMatchesForTrip } = useApp();
 
   const [activeTab, setActiveTab] = useState<TabKey>("my_trips");
   const [from, setFrom] = useState("");

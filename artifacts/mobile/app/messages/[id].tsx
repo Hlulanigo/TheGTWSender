@@ -183,10 +183,10 @@ export default function ChatScreen() {
             multiline
             maxLength={500}
             returnKeyType="send"
-            onSubmitEditing={handleSend}
+            onSubmitEditing={() => handleSend()}
           />
           <TouchableOpacity
-            onPress={handleSend}
+            onPress={() => handleSend()}
             disabled={!text.trim()}
             style={styles.sendWrapper}
           >
